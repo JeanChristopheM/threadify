@@ -1,0 +1,30 @@
+.mainContainer {
+  display: flex;
+  flex-wrap: wrap;
+  .mainSection {
+    &--setup {
+      flex: 1 0 200px;
+      .formGroup {
+        display: flex;
+        & > * {
+          flex: 1 1 50%;
+        }
+      }
+    }
+    &--canvas {
+      flex: 0 0 600px;
+      position: relative;
+      .backgroundCanvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+    }
+    &--output {
+      flex: 1 0 200px;
+    }
+  }
+}
+.sectionHeader {
+  padding: 0.5rem;
+}
