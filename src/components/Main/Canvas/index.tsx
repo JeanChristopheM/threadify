@@ -11,7 +11,7 @@ type ICanvasProps = {
 };
 const Canvas = React.forwardRef<HTMLCanvasElement, ICanvasProps>(
   ({ w, h, id, className }, ref) => {
-    useLayoutEffect(() => {
+    const init = () => {
       if (!ref) return;
       const canvas = (ref as any).current;
       if (canvas) {
@@ -19,7 +19,10 @@ const Canvas = React.forwardRef<HTMLCanvasElement, ICanvasProps>(
         canvas.height = h;
         canvas.style.border = "1px solid black";
       }
-    });
+    };
+    useLayoutEffect(() => {
+      init();
+    }, []);
     return <canvas ref={ref} id={id || ""} className={className || ""} />;
   }
 );

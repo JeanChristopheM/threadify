@@ -13,11 +13,23 @@
     }
     &--canvas {
       flex: 0 0 600px;
-      position: relative;
-      .backgroundCanvas {
-        position: absolute;
-        top: 0;
-        left: 0;
+      .canvasContainer {
+        position: relative;
+        isolation: isolate;
+        .backgroundCanvas {
+          position: absolute;
+          top: 0;
+          left: 0;
+        }
+        #drawingCanvas {
+          z-index: 5;
+        }
+        #pointsCanvas {
+          z-index: 2;
+        }
+        #imageCanvas {
+          z-index: -1;
+        }
       }
     }
     &--output {

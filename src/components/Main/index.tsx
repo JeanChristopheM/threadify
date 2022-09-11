@@ -18,11 +18,15 @@ import {
 } from "../../utils/functions";
 import { Mode } from "../../utils/interfaces";
 import Canvas from "./Canvas";
+import CanvasSection from "./CanvasSection";
+import OutputSection from "./OutputSection";
 import SetupSection from "./SetupSection";
 
 const Main = () => {
   //. Local State
   //. -----------
+  const [pointsAmount, setPointsAmount] = useState<number>(DEFAULT_POINTS);
+  const [iterations, setIterations] = useState<number>(DEFAULT_ITERATIONS);
   const [steps, setSteps] = useState<number[]>([]);
   const [points, setPoints] = useState<Map<number, Point>>(new Map());
   const [lines, setLines] = useState<Map<number, Line>>(new Map());
@@ -33,10 +37,14 @@ const Main = () => {
   const pointsRef = useRef<HTMLCanvasElement>(null);
   const imageRef = useRef<HTMLCanvasElement>(null);
 
+  const canvasesRef = useRef({ drawingRef, pointsRef, imageRef });
+
   //. Effects
   //. -------
   useEffect(() => {
+    console.log("steps changed");
     if (steps.length && points.size && lines.size && drawingRef.current) {
+      console.log("and we have everything we need to redraw lines");
       const ctx = drawingRef.current.getContext("2d");
       ctx && drawLines(steps, lines, ctx, 5, 100, "#000");
     }
@@ -49,6 +57,16 @@ const Main = () => {
     if (!drawingRef.current) throw new Error("No drawing canvas loaded");
     if (!pointsRef.current) throw new Error("No points canvas loaded");
     if (!imageRef.current) throw new Error("No image canvas loaded");
+    const imageCtx = imageRef.current.getContext("2d");
+    if (!imageCtx) throw new Error("No image ctx for imageCanvas");
+    const buf32 = new Uint32Array(
+      imageCtx.getImageData(
+        0,
+        0,
+        imageRef.current.width,
+        imageRef.current.height
+      ).data.buffer
+    );
     const target = e.target as unknown as HTMLInputElement[];
     const pointsAmount = Number(target[0].value);
     const mode = target[1].value as Mode;
@@ -65,7 +83,7 @@ const Main = () => {
     const lines = calcLines(points);
     setLines(lines);
     const steps = generateSteps(
-      new Uint32Array(20),
+      buf32,
       MAX_ITERATIONS,
       lines,
       mode,
@@ -86,39 +104,13 @@ const Main = () => {
   return (
     <main>
       <div className="mainContainer">
-        <SetupSection imageRef={imageRef} generateHandler={handleGenerate} />
-        <section className="mainSection--canvas">
-          <Canvas
-            ref={drawingRef}
-            id="drawingCanvas"
-            w={DEFAULT_CANVAS_WIDTH}
-            h={DEFAULT_CANVAS_HEIGHT}
-          />
-          <Canvas
-            ref={pointsRef}
-            id="pointsCanvas"
-            className="backgroundCanvas"
-            w={DEFAULT_CANVAS_WIDTH}
-            h={DEFAULT_CANVAS_HEIGHT}
-          />
-          <Canvas
-            ref={imageRef}
-            id="imageCanvas"
-            className="backgroundCanvas"
-            w={DEFAULT_CANVAS_WIDTH}
-            h={DEFAULT_CANVAS_HEIGHT}
-          />
-        </section>
-        <section className="mainSection--output">
-          <label htmlFor="iterationsSlider">Number of steps</label>
-          <input
-            type="range"
-            name="iterationsSlider"
-            min="100"
-            max="5000"
-            defaultValue={DEFAULT_ITERATIONS}
-          />
-        </section>
+        <SetupSection
+          imageRef={imageRef}
+          generateHandler={handleGenerate}
+          setPointsAmount={setPointsAmount}
+        />
+        <CanvasSection ref={canvasesRef} />
+        <OutputSection setIterations={setIterations} />
       </div>
     </main>
   );

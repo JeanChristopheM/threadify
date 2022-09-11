@@ -1,12 +1,17 @@
-import React from "react";
+import React, { ChangeEvent } from "react";
 import { DEFAULT_POINTS } from "../../../utils/constants";
 import { getImageDataFromFile } from "../../../utils/functions";
 
 type ISetupSectionProps = {
   imageRef: React.RefObject<HTMLCanvasElement>;
   generateHandler: (e: React.FormEvent) => void;
+  setPointsAmount: (pointsAmount: number) => void;
 };
-const SetupSection = ({ imageRef, generateHandler }: ISetupSectionProps) => {
+const SetupSection = ({
+  imageRef,
+  generateHandler,
+  setPointsAmount,
+}: ISetupSectionProps) => {
   //. Handlers
   //. --------
   const handleFileChange = async (e: React.ChangeEvent) => {
@@ -22,6 +27,11 @@ const SetupSection = ({ imageRef, generateHandler }: ISetupSectionProps) => {
     if (!file) throw new Error("no file index 0 in inputfile");
     const fileData = await getImageDataFromFile(file, imageCanvas.width);
     ctx.putImageData(fileData as ImageData, 0, 0);
+  };
+  const handleChangePoints = (e: ChangeEvent) => {
+    const target = e.target as HTMLInputElement;
+    if (target.nextSibling) target.nextSibling.textContent = target.value;
+    setPointsAmount(Number(target.value));
   };
   //. Return
   //. ------
@@ -43,7 +53,9 @@ const SetupSection = ({ imageRef, generateHandler }: ISetupSectionProps) => {
             min="50"
             max="400"
             defaultValue={DEFAULT_POINTS}
+            onChange={handleChangePoints}
           />
+          <span>{DEFAULT_POINTS}</span>
         </div>
         <div className="formGroup">
           <label htmlFor="modeSelector">Mode of ouput</label>
