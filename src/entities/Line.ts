@@ -1,6 +1,13 @@
-import { getPixelsIndexesFromPositions } from "../utils/functions";
+import { DEFAULT_CANVAS_WIDTH } from "../utils/constants";
 import Point from "./Point";
-
+const getPixelsIndexesFromPositions = (pos: Point[]) => {
+  const result: number[] = [];
+  pos.forEach((p, _i) => {
+    const index = p.x + p.y * DEFAULT_CANVAS_WIDTH;
+    result.push(index);
+  });
+  return result;
+};
 export default class Line {
   p1: Point;
   p2: Point;

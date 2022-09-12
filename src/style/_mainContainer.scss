@@ -31,6 +31,12 @@
           z-index: -1;
         }
       }
+      .canvasControls {
+        display: flex;
+        .inputGroup {
+          flex: 1 0 50%;
+        }
+      }
     }
     &--output {
       flex: 1 0 200px;

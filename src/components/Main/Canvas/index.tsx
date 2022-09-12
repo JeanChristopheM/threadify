@@ -8,9 +8,10 @@ type ICanvasProps = {
   buf32?: Uint32Array;
   id?: string;
   className?: string;
+  opacity?: number;
 };
 const Canvas = React.forwardRef<HTMLCanvasElement, ICanvasProps>(
-  ({ w, h, id, className }, ref) => {
+  ({ w, h, id, className, opacity }, ref) => {
     const init = () => {
       if (!ref) return;
       const canvas = (ref as any).current;
@@ -23,7 +24,14 @@ const Canvas = React.forwardRef<HTMLCanvasElement, ICanvasProps>(
     useLayoutEffect(() => {
       init();
     }, []);
-    return <canvas ref={ref} id={id || ""} className={className || ""} />;
+    return (
+      <canvas
+        ref={ref}
+        id={id || ""}
+        className={className || ""}
+        style={{ opacity: `${opacity ?? 1}` }}
+      />
+    );
   }
 );
 

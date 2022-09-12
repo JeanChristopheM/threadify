@@ -10,18 +10,13 @@ import {
   DEFAULT_POINTS,
   MAX_ITERATIONS,
 } from "../../utils/constants";
-import {
-  calcLines,
-  drawLines,
-  generateSteps,
-  getDots,
-} from "../../utils/functions";
+import { calcLines, drawLines, getDots } from "../../utils/functions";
 import { Mode } from "../../utils/interfaces";
-import Canvas from "./Canvas";
+import { generateSteps } from "../../utils/thread";
 import CanvasSection from "./CanvasSection";
 import OutputSection from "./OutputSection";
 import SetupSection from "./SetupSection";
-
+let minX: number, minY: number, maxX: number, maxY: number;
 const Main = () => {
   //. Local State
   //. -----------
@@ -42,16 +37,19 @@ const Main = () => {
   //. Effects
   //. -------
   useEffect(() => {
-    console.log("steps changed");
-    if (steps.length && points.size && lines.size && drawingRef.current) {
-      console.log("and we have everything we need to redraw lines");
-      const ctx = drawingRef.current.getContext("2d");
-      ctx && drawLines(steps, lines, ctx, 5, 100, "#000");
-    }
-  }, [steps, points, lines, drawingRef]);
+    handleDrawLines();
+  }, [steps, points, lines, drawingRef, iterations]);
 
   //. Handlers
   //. --------
+  const handleDrawLines = () => {
+    console.log("attempting to draw lines");
+    if (steps.length && points.size && lines.size && drawingRef.current) {
+      console.log("and we have everything we need to redraw lines");
+      const ctx = drawingRef.current.getContext("2d");
+      ctx && drawLines(steps, lines, ctx, 5, iterations, "#000");
+    }
+  };
   const handleGenerate = async (e: FormEvent) => {
     e.preventDefault();
     if (!drawingRef.current) throw new Error("No drawing canvas loaded");
@@ -68,7 +66,6 @@ const Main = () => {
       ).data.buffer
     );
     const target = e.target as unknown as HTMLInputElement[];
-    const pointsAmount = Number(target[0].value);
     const mode = target[1].value as Mode;
 
     if (!pointsAmount) throw new Error("No points amount set in the form");
@@ -90,10 +87,10 @@ const Main = () => {
       DEFAULT_MIN_DISTANCE,
       DEFAULT_FADE,
       points,
-      999,
-      999,
-      999,
-      999
+      minX,
+      minY,
+      maxX,
+      maxY
     );
     setSteps(steps);
     console.log("Done generating");
