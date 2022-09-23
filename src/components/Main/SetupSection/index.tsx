@@ -1,12 +1,17 @@
-import React from "react";
+import React, { ChangeEvent } from "react";
 import { DEFAULT_POINTS } from "../../../utils/constants";
 import { getImageDataFromFile } from "../../../utils/functions";
 
 type ISetupSectionProps = {
   imageRef: React.RefObject<HTMLCanvasElement>;
   generateHandler: (e: React.FormEvent) => void;
+  setPointsAmount: (pointsAmount: number) => void;
 };
-const SetupSection = ({ imageRef, generateHandler }: ISetupSectionProps) => {
+const SetupSection = ({
+  imageRef,
+  generateHandler,
+  setPointsAmount,
+}: ISetupSectionProps) => {
   //. Handlers
   //. --------
   const handleFileChange = async (e: React.ChangeEvent) => {
@@ -23,6 +28,17 @@ const SetupSection = ({ imageRef, generateHandler }: ISetupSectionProps) => {
     const fileData = await getImageDataFromFile(file, imageCanvas.width);
     ctx.putImageData(fileData as ImageData, 0, 0);
   };
+  const handleChangePoints = (e: ChangeEvent) => {
+    const target = e.target as HTMLInputElement;
+    if (target.parentElement) {
+      if (target.parentElement.parentElement) {
+        if (target.parentElement.parentElement.lastChild)
+          target.parentElement.parentElement.lastChild.textContent =
+            target.value;
+      }
+    }
+    setPointsAmount(Number(target.value));
+  };
   //. Return
   //. ------
   return (
@@ -37,22 +53,26 @@ const SetupSection = ({ imageRef, generateHandler }: ISetupSectionProps) => {
       <form onSubmit={generateHandler}>
         <div className="formGroup">
           <label htmlFor="pointsSlider">Number of points</label>
-          <input
-            type="range"
-            name="pointsSlider"
-            min="50"
-            max="400"
-            defaultValue={DEFAULT_POINTS}
-          />
+          <div className="inputRange_container">
+            <input
+              type="range"
+              name="pointsSlider"
+              min="50"
+              max="400"
+              defaultValue={DEFAULT_POINTS}
+              onChange={handleChangePoints}
+            />
+          </div>
+          <span>{DEFAULT_POINTS}</span>
         </div>
         <div className="formGroup">
           <label htmlFor="modeSelector">Mode of ouput</label>
-          <select name="modeSelector">
+          <select name="modeSelector" className="inputSelect">
             <option value="circle">Circle</option>
             <option value="square">Square</option>
           </select>
         </div>
-        <div className="formGroup">
+        <div className="formGroup submitButton">
           <button type="submit">Generate steps</button>
         </div>
       </form>

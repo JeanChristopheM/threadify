@@ -1,23 +1,52 @@
 .mainContainer {
   display: flex;
   flex-wrap: wrap;
+  z-index: -10;
+  isolation: isolate;
+  min-height: 75vh;
   .mainSection {
     &--setup {
       flex: 1 0 200px;
       .formGroup {
         display: flex;
+        padding-block: 1rem;
         & > * {
           flex: 1 1 50%;
+        }
+        &.submitButton {
+          justify-content: center;
         }
       }
     }
     &--canvas {
       flex: 0 0 600px;
-      position: relative;
-      .backgroundCanvas {
-        position: absolute;
-        top: 0;
-        left: 0;
+      .canvasContainer {
+        position: relative;
+        isolation: isolate;
+        margin-top: 1rem;
+        .backgroundCanvas {
+          position: absolute;
+          top: 0;
+          left: 0;
+        }
+        #drawingCanvas {
+          z-index: 5;
+        }
+        #pointsCanvas {
+          z-index: 2;
+        }
+        #imageCanvas {
+          z-index: -1;
+        }
+      }
+      .canvasControls {
+        display: flex;
+        .inputGroup {
+          flex: 1 1 50%;
+          &.switchButton {
+            flex: 0 1 max-content;
+          }
+        }
       }
     }
     &--output {
