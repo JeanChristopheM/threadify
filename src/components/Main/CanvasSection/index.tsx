@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useLayoutEffect, useState } from "react";
+import React, { ChangeEvent, useLayoutEffect, useRef, useState } from "react";
 import {
   DEFAULT_CANVAS_WIDTH,
   DEFAULT_CANVAS_HEIGHT,
@@ -22,6 +22,8 @@ const CanvasSection = React.forwardRef<
   //. Refs
   //. ----
   const { drawingRef, pointsRef, imageRef } = (ref as any)?.current;
+  const imageSliderRef = useRef<HTMLInputElement | null>(null);
+  const drawingSliderRef = useRef<HTMLInputElement | null>(null);
 
   //. Handlers
   //. --------
@@ -33,6 +35,20 @@ const CanvasSection = React.forwardRef<
     if (target.name === "drawingOpacity")
       setDrawingOpacity(Number(target.value) / 100);
   };
+
+  const handleSwitchOpacity = () => {
+    const tempImageOpacity = imageOpacity;
+    setImageOpacity(drawingOpacity);
+    if (imageSliderRef.current)
+      imageSliderRef.current.value = Math.round(
+        drawingOpacity * 100
+      ).toString();
+    setDrawingOpacity(tempImageOpacity);
+    if (drawingSliderRef.current)
+      drawingSliderRef.current.value = Math.round(
+        tempImageOpacity * 100
+      ).toString();
+  };
   //. Return
   //. ------
   return (
@@ -43,25 +59,36 @@ const CanvasSection = React.forwardRef<
       <div className="canvasControls">
         <div className="inputGroup">
           <label htmlFor="imageOpacity">Image</label>
-          <input
-            type="range"
-            name="imageOpacity"
-            min="0"
-            max="100"
-            defaultValue="100"
-            onChange={handleOpacityChange}
-          />
+          <div className="inputRange_container">
+            <input
+              type="range"
+              name="imageOpacity"
+              min="0"
+              max="100"
+              defaultValue="100"
+              onChange={handleOpacityChange}
+              ref={imageSliderRef}
+            />
+          </div>
+        </div>
+        <div className="inputGroup switchButton">
+          <button type="button" onClick={handleSwitchOpacity}>
+            SWITCH
+          </button>
         </div>
         <div className="inputGroup">
           <label htmlFor="drawingOpacity">Thread</label>
-          <input
-            type="range"
-            name="drawingOpacity"
-            min="0"
-            max="100"
-            defaultValue="100"
-            onChange={handleOpacityChange}
-          />
+          <div className="inputRange_container">
+            <input
+              type="range"
+              name="drawingOpacity"
+              min="0"
+              max="100"
+              defaultValue="100"
+              onChange={handleOpacityChange}
+              ref={drawingSliderRef}
+            />
+          </div>
         </div>
       </div>
       <div className="canvasContainer">

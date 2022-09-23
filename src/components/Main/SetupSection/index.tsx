@@ -30,7 +30,13 @@ const SetupSection = ({
   };
   const handleChangePoints = (e: ChangeEvent) => {
     const target = e.target as HTMLInputElement;
-    if (target.nextSibling) target.nextSibling.textContent = target.value;
+    if (target.parentElement) {
+      if (target.parentElement.parentElement) {
+        if (target.parentElement.parentElement.lastChild)
+          target.parentElement.parentElement.lastChild.textContent =
+            target.value;
+      }
+    }
     setPointsAmount(Number(target.value));
   };
   //. Return
@@ -47,14 +53,16 @@ const SetupSection = ({
       <form onSubmit={generateHandler}>
         <div className="formGroup">
           <label htmlFor="pointsSlider">Number of points</label>
-          <input
-            type="range"
-            name="pointsSlider"
-            min="50"
-            max="400"
-            defaultValue={DEFAULT_POINTS}
-            onChange={handleChangePoints}
-          />
+          <div className="inputRange_container">
+            <input
+              type="range"
+              name="pointsSlider"
+              min="50"
+              max="400"
+              defaultValue={DEFAULT_POINTS}
+              onChange={handleChangePoints}
+            />
+          </div>
           <span>{DEFAULT_POINTS}</span>
         </div>
         <div className="formGroup">
@@ -64,7 +72,7 @@ const SetupSection = ({
             <option value="square">Square</option>
           </select>
         </div>
-        <div className="formGroup">
+        <div className="formGroup submitButton">
           <button type="submit">Generate steps</button>
         </div>
       </form>

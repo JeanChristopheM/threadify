@@ -8,7 +8,13 @@ type IOutputSectionProps = {
 const OutputSection = ({ setIterations }: IOutputSectionProps) => {
   const handleChangeIterations = (e: React.ChangeEvent) => {
     const target = e.target as HTMLInputElement;
-    if (target.nextSibling) target.nextSibling.textContent = target.value;
+    if (target.parentElement) {
+      if (target.parentElement.parentElement) {
+        if (target.parentElement.parentElement.lastChild)
+          target.parentElement.parentElement.lastChild.textContent =
+            target.value;
+      }
+    }
     setIterations(Number(target.value));
   };
   return (
@@ -18,14 +24,16 @@ const OutputSection = ({ setIterations }: IOutputSectionProps) => {
       </div>
       <div className="formGroup">
         <label htmlFor="iterationsSlider">Number of steps</label>
-        <input
-          type="range"
-          name="iterationsSlider"
-          min="100"
-          max="5000"
-          defaultValue={DEFAULT_ITERATIONS}
-          onChange={handleChangeIterations}
-        />
+        <div className="inputRange_container">
+          <input
+            type="range"
+            name="iterationsSlider"
+            min="100"
+            max="5000"
+            defaultValue={DEFAULT_ITERATIONS}
+            onChange={handleChangeIterations}
+          />
+        </div>
         <span>{DEFAULT_ITERATIONS}</span>
       </div>
     </section>
