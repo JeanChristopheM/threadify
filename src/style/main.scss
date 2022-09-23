@@ -46,7 +46,6 @@ main {
 button {
   padding: 1rem;
   border-radius: 0.3rem;
-  background-color: $clr-accent;
   display: flex;
   justify-content: center;
   max-width: max-content;
@@ -54,6 +53,7 @@ button {
   cursor: pointer;
   z-index: 0;
   transform: translateY(0);
+  background-color: $clr-accent;
   box-shadow: 0 3px 0 0 $clr-accent-dark;
   @media (hover: hover) {
     &:hover {
@@ -64,6 +64,15 @@ button {
   &:active {
     transform: translateY(3px);
     box-shadow: 0 0px 0 0 $clr-accent-dark;
+  }
+  &:disabled {
+    background-color: $clr-accent-disabled;
+    box-shadow: 0 3px 0 0 $clr-accent-dark-disabled;
+    cursor: not-allowed;
+    &:hover {
+      transform: none;
+      box-shadow: 0 3px 0 0 $clr-accent-dark-disabled;
+    }
   }
 }
 .inputRange_container {

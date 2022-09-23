@@ -114,7 +114,7 @@ const Main = () => {
           setPointsAmount={setPointsAmount}
         />
         <CanvasSection ref={canvasesRef} />
-        <OutputSection setIterations={setIterations} />
+        <OutputSection setIterations={setIterations} steps={steps} lines={lines} iterations={iterations} />
       </div>
     </main>
   );

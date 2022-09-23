@@ -1,8 +1,11 @@
 $defaultFontSize: 14px;
 $clr-bg: #2d3e50;
 $clr-main: #eeead3;
+
 $clr-accent: #53a548;
 $clr-accent-dark: #45713f;
+$clr-accent-disabled: #50564f;
+$clr-accent-dark-disabled: #2d2f2c;
 
 @function rem($multiplier) {
   @return (14 * $multiplier) * 1px;
