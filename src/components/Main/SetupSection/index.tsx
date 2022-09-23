@@ -67,7 +67,7 @@ const SetupSection = ({
         </div>
         <div className="formGroup">
           <label htmlFor="modeSelector">Mode of ouput</label>
-          <select name="modeSelector">
+          <select name="modeSelector" className="inputSelect">
             <option value="circle">Circle</option>
             <option value="square">Square</option>
           </select>
