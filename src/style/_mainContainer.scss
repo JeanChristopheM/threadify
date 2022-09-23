@@ -34,9 +34,11 @@
         }
         #pointsCanvas {
           z-index: 2;
+          pointer-events: none;
         }
         #imageCanvas {
           z-index: -1;
+          pointer-events: none;
         }
       }
       .canvasControls {
