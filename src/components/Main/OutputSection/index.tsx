@@ -69,6 +69,21 @@ const OutputSection = ({
     link.remove();
   };
 
+  const handleSaveSteps = () => {
+    const link = document.createElement("a");
+    const instructions = steps.reduce(
+      (acc: string[], cur: number, i: number) => {
+        if (i === 0) acc.push(`${cur} -> ${steps[i + 1]}`);
+        else acc.push(`\n${cur} -> ${steps[i + 1]}`);
+        return acc;
+      },
+      []
+    );
+    link.setAttribute("href", `data:text/plain;charset=utf-8,${instructions}`);
+    link.setAttribute("download", "steps.txt");
+    link.click();
+    link.remove();
+  };
   //. Return
   //. ------
   return (
@@ -90,10 +105,21 @@ const OutputSection = ({
         </div>
         <span>{DEFAULT_ITERATIONS}</span>
       </div>
-      <div className="formGroup">
-        <button type="button" onClick={handleSave} disabled={downloadDisabled}>
-          Save Drawing
-        </button>
+      <div className="formGroup twoCols">
+        <div className="buttonWrap">
+          <button
+            type="button"
+            onClick={handleSave}
+            disabled={downloadDisabled}
+          >
+            Save Drawing
+          </button>
+        </div>
+        <div className="buttonWrap">
+          <button type="button" onClick={handleSaveSteps}>
+            Save Steps
+          </button>
+        </div>
       </div>
     </section>
   );

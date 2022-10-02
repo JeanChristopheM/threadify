@@ -91,6 +91,39 @@ export const getDots = (amount: number, w: number, h: number, mode: Mode) => {
   }
   return points;
 };
+export const drawPoint = (
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  color: string
+) => {
+  ctx.beginPath();
+  ctx.arc(x, y, 1, 0, Math.PI * 2, false);
+  ctx.fillStyle = color;
+  ctx.fill();
+};
+
+export const drawText = (
+  ctx: CanvasRenderingContext2D,
+  text: string,
+  x: number,
+  y: number,
+  color: string
+) => {
+  ctx.font = "8px Arial";
+  ctx.fillStyle = color;
+  ctx.fillText(text, x, y);
+};
+
+export const drawDots = (
+  ctx: CanvasRenderingContext2D,
+  dots: Map<number, Point>
+) => {
+  dots.forEach((dot, i) => {
+    drawPoint(ctx, dot.x, dot.y, "#0dc143");
+    drawText(ctx, `${i}`, dot.x, dot.y, "#0000004d");
+  });
+};
 export const getScaledImgSize = (iW: number, iH: number, cW: number) => {
   const ratio = iW / iH;
   const result = {

@@ -10,7 +10,13 @@ import {
   DEFAULT_POINTS,
   MAX_ITERATIONS,
 } from "../../utils/constants";
-import { calcLines, drawLines, getDots } from "../../utils/functions";
+import {
+  calcLines,
+  clearCtx,
+  drawDots,
+  drawLines,
+  getDots,
+} from "../../utils/functions";
 import { Mode } from "../../utils/interfaces";
 import { generateSteps } from "../../utils/thread";
 import CanvasSection from "./CanvasSection";
@@ -41,6 +47,24 @@ const Main = () => {
   useEffect(() => {
     handleDrawLines();
   }, [steps, points, lines, drawingRef, iterations]);
+  useEffect(() => {
+    if (!drawingRef.current) return;
+    const modeInput = document.querySelector(
+      ".inputSelect"
+    ) as HTMLInputElement;
+    if (!modeInput) return;
+    const mode = modeInput.value as Mode;
+    if (!mode) return;
+    setPoints(
+      getDots(
+        pointsAmount,
+        drawingRef.current.width,
+        drawingRef.current.height,
+        mode
+      )
+    );
+    handleDrawPoints();
+  }, [pointsAmount]);
 
   //. Handlers
   //. --------
@@ -49,6 +73,13 @@ const Main = () => {
       const ctx = drawingRef.current.getContext("2d");
       ctx && drawLines(steps, lines, ctx, 5, iterations, "#000");
     }
+  };
+  const handleDrawPoints = () => {
+    if (!pointsRef.current) return;
+    const ctx = pointsRef.current.getContext("2d");
+    if (!ctx) return;
+    clearCtx(ctx);
+    drawDots(ctx, points);
   };
   const handleGenerate = async (e: FormEvent) => {
     e.preventDefault();
@@ -114,7 +145,12 @@ const Main = () => {
           setPointsAmount={setPointsAmount}
         />
         <CanvasSection ref={canvasesRef} />
-        <OutputSection setIterations={setIterations} steps={steps} lines={lines} iterations={iterations} />
+        <OutputSection
+          setIterations={setIterations}
+          steps={steps}
+          lines={lines}
+          iterations={iterations}
+        />
       </div>
     </main>
   );

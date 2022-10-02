@@ -90,3 +90,9 @@ input[type="range"] {
   padding: 0.3rem;
   border: 1px solid black;
 }
+.twoCols {
+  display: flex;
+  & > * {
+    flex: 1 0 50%;
+  }
+}
