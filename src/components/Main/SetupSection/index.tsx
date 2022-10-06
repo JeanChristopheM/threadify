@@ -25,7 +25,14 @@ const SetupSection = ({
     if (!inputFiles) throw new Error("no files in inputfile");
     const file = inputFiles[0];
     if (!file) throw new Error("no file index 0 in inputfile");
-    const fileData = await getImageDataFromFile(file, imageCanvas.width);
+    const { imageData: fileData, image } = await getImageDataFromFile(
+      file,
+      imageCanvas.width,
+      0,
+      0
+    );
+    // @ts-ignore
+    imageRef.current.file = image;
     ctx.putImageData(fileData as ImageData, 0, 0);
   };
   const handleChangePoints = (e: ChangeEvent) => {

@@ -22,7 +22,6 @@
       flex: 0 0 600px;
       .canvasContainer {
         position: relative;
-        isolation: isolate;
         margin-top: 1rem;
         .backgroundCanvas {
           position: absolute;
@@ -31,14 +30,14 @@
         }
         #drawingCanvas {
           z-index: 5;
+          pointer-events: none;
         }
         #pointsCanvas {
           z-index: 2;
           pointer-events: none;
         }
         #imageCanvas {
-          z-index: -1;
-          pointer-events: none;
+          z-index: 0;
         }
       }
       .canvasControls {

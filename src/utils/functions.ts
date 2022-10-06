@@ -91,6 +91,21 @@ export const getDots = (amount: number, w: number, h: number, mode: Mode) => {
   }
   return points;
 };
+export const getMaxs = (points: Map<number, Point>) => {
+  let minX: number = 99999;
+  let minY: number = 99999;
+  let maxX: number = -1;
+  let maxY: number = -1;
+  for (let i = 0; i < points.size; i++) {
+    const point = points.get(i);
+    if (!point) continue;
+    if (point.x < minX) minX = point.x;
+    if (point.x > maxX) maxX = point.x;
+    if (point.y < minY) minY = point.y;
+    if (point.y > maxY) maxY = point.y;
+  }
+  return { minX, minY, maxX, maxY };
+};
 export const drawPoint = (
   ctx: CanvasRenderingContext2D,
   x: number,
@@ -143,8 +158,17 @@ export const getScaledImgSize = (iW: number, iH: number, cW: number) => {
 };
 export const getImageDataFromFile = async (
   file: File,
-  canvasWidth: number
-): Promise<ImageData> =>
+  canvasWidth: number,
+  x: number,
+  y: number
+): Promise<{
+  imageData: ImageData;
+  image: {
+    img: HTMLImageElement;
+    width: number;
+    height: number;
+  };
+}> =>
   new Promise((resolve, reject) => {
     let imageData: ImageData;
     const canvas = document.createElement("canvas");
@@ -159,15 +183,16 @@ export const getImageDataFromFile = async (
     }
     img.onload = () => {
       const dimensions = getScaledImgSize(img.width, img.height, canvasWidth);
-      ctx.drawImage(
-        img,
-        canvas.width / 2 - dimensions.width / 2,
-        canvas.height / 2 - dimensions.height / 2,
-        dimensions.width,
-        dimensions.height
-      );
+      ctx.drawImage(img, x, y, dimensions.width, dimensions.height);
       imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      resolve(imageData);
+      resolve({
+        imageData,
+        image: {
+          img,
+          width: dimensions.width,
+          height: dimensions.height,
+        },
+      });
     };
     fr.onload = () => {
       img.src = fr.result as string;

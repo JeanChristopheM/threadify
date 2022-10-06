@@ -26,6 +26,8 @@ const nextPin = (
 ) => {
   let maxScore: number = 0;
   let next = -1;
+  const squareMinXDiff = maxX - minX;
+  const squareMinYDiff = maxY - minY;
 
   for (let i = 0; i < pins.size; i++) {
     if (current === i) continue;
@@ -42,6 +44,14 @@ const nextPin = (
       if (pCurr!.x == maxX && pNext!.x == maxX) continue;
       if (pCurr!.y == minY && pNext!.y == minY) continue;
       if (pCurr!.y == maxY && pNext!.y == maxY) continue;
+      if (pCurr!.x === pNext!.x) {
+        const yDiff = Math.abs(pCurr!.y - pNext!.y);
+        if (yDiff < squareMinYDiff) continue;
+      }
+      if (pCurr!.y === pNext!.y) {
+        const xDiff = Math.abs(pCurr!.x - pNext!.x);
+        if (xDiff < squareMinXDiff) continue;
+      }
     }
 
     // Prevent usage of already used pin pair

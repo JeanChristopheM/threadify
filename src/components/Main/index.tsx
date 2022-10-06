@@ -16,6 +16,7 @@ import {
   drawDots,
   drawLines,
   getDots,
+  getMaxs,
 } from "../../utils/functions";
 import { Mode } from "../../utils/interfaces";
 import { generateSteps } from "../../utils/thread";
@@ -23,7 +24,7 @@ import CanvasSection from "./CanvasSection";
 import OutputSection from "./OutputSection";
 import SetupSection from "./SetupSection";
 import Spinner from "./Spinner";
-let minX: number, minY: number, maxX: number, maxY: number;
+
 const Main = () => {
   //. Local State
   //. -----------
@@ -44,9 +45,11 @@ const Main = () => {
 
   //. Effects
   //. -------
+  // * Drawing lines when something changes
   useEffect(() => {
-    handleDrawLines();
-  }, [steps, points, lines, drawingRef, iterations]);
+    if (points) handleDrawLines();
+  }, [steps, lines, drawingRef, iterations]);
+  // * Drawing points when points change
   useEffect(() => {
     if (!drawingRef.current) return;
     const modeInput = document.querySelector(
@@ -64,7 +67,7 @@ const Main = () => {
       )
     );
     handleDrawPoints();
-  }, [pointsAmount]);
+  }, [pointsAmount, drawingRef.current]);
 
   //. Handlers
   //. --------
@@ -109,6 +112,8 @@ const Main = () => {
         drawingRef.current.height,
         mode
       );
+      const { minX, minY, maxX, maxY } = getMaxs(points);
+      console.log({ points });
       setPoints(points);
       const lines = calcLines(points);
       setLines(lines);

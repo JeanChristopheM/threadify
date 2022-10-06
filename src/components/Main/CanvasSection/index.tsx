@@ -93,8 +93,17 @@ const CanvasSection = React.forwardRef<
       </div>
       <div className="canvasContainer">
         <Canvas
+          ref={imageRef}
+          id="imageCanvas"
+          w={DEFAULT_CANVAS_WIDTH}
+          h={DEFAULT_CANVAS_HEIGHT}
+          opacity={imageOpacity}
+          draggable
+        />
+        <Canvas
           ref={drawingRef}
           id="drawingCanvas"
+          className="backgroundCanvas"
           w={DEFAULT_CANVAS_WIDTH}
           h={DEFAULT_CANVAS_HEIGHT}
           opacity={drawingOpacity}
@@ -105,14 +114,6 @@ const CanvasSection = React.forwardRef<
           className="backgroundCanvas"
           w={DEFAULT_CANVAS_WIDTH}
           h={DEFAULT_CANVAS_HEIGHT}
-        />
-        <Canvas
-          ref={imageRef}
-          id="imageCanvas"
-          className="backgroundCanvas"
-          w={DEFAULT_CANVAS_WIDTH}
-          h={DEFAULT_CANVAS_HEIGHT}
-          opacity={imageOpacity}
         />
       </div>
     </section>
