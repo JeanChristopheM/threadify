@@ -140,7 +140,7 @@ const ImageCanvas = React.forwardRef<HTMLCanvasElement, IImageCanvasProps>(
         canvas.removeEventListener("mouseup", mouseUpHandler);
         canvas.removeEventListener("mousemove", mouseMoveHandler);
       };
-    }, [ref]);
+    }, [canvas]);
     // . Return
     // . ------
     return (

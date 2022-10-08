@@ -10,11 +10,21 @@
       .formGroup {
         display: flex;
         padding-block: 1rem;
+        flex-wrap: wrap;
+        &.separator {
+          border-bottom: 1px dashed grey;
+        }
         & > * {
-          flex: 1 1 50%;
+          flex: 1 1 100%;
         }
         &.submitButton {
           justify-content: center;
+        }
+      }
+      .subSection {
+        padding: 1rem;
+        &__header {
+          margin-bottom: 0.3rem;
         }
       }
     }

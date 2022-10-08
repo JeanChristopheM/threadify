@@ -35,6 +35,8 @@ const Main = () => {
   const [points, setPoints] = useState<Map<number, Point>>(new Map());
   const [lines, setLines] = useState<Map<number, Line>>(new Map());
   const [mode, setMode] = useState<Mode>(Mode.CIRCLE);
+  const [canvasWidth, setCanvasWidth] = useState<number>(100);
+  const [canvasHeight, setCanvasHeight] = useState<number>(100);
 
   //. Local References
   //. ----------------
@@ -49,15 +51,14 @@ const Main = () => {
   // * Changing points when mode/pointsAmount changes
   useEffect(() => {
     if (!drawingRef.current) return;
+    const width = Math.floor(drawingRef.current.width * (canvasWidth / 100));
+    const height = Math.floor(drawingRef.current.height * (canvasHeight / 100));
+    const lostWidth = drawingRef.current.width - width;
+    const lostHeight = drawingRef.current.height - height;
     setPoints(
-      getDots(
-        pointsAmount,
-        drawingRef.current.width,
-        drawingRef.current.height,
-        mode
-      )
+      getDots(pointsAmount, width, height, mode, lostWidth, lostHeight)
     );
-  }, [pointsAmount, drawingRef.current, mode]);
+  }, [pointsAmount, drawingRef.current, mode, canvasWidth, canvasHeight]);
   // * Drawing lines when something changes
   useEffect(() => {
     if (points) handleDrawLines();
@@ -103,18 +104,13 @@ const Main = () => {
         ).data.buffer
       );
 
-      if (!pointsAmount) throw new Error("No points amount set in the form");
-      const points = getDots(
-        pointsAmount,
-        drawingRef.current.width,
-        drawingRef.current.height,
-        mode
-      );
+      if (!pointsAmount || !points)
+        throw new Error("No points amount set in the form");
       const { minX, minY, maxX, maxY } = getMaxs(points);
-      console.log({ points });
-      setPoints(points);
+
       const lines = calcLines(points);
       setLines(lines);
+
       const steps = generateSteps(
         buf32,
         MAX_ITERATIONS,
@@ -129,6 +125,7 @@ const Main = () => {
         maxY
       );
       setSteps(steps);
+
       console.log("Done generating");
     }, 10);
     setTimeout(() => {
@@ -147,6 +144,8 @@ const Main = () => {
           generateHandler={handleGenerate}
           setPointsAmount={setPointsAmount}
           modeSetter={handleModeChange}
+          widthSetter={setCanvasWidth}
+          heightSetter={setCanvasHeight}
         />
         <CanvasSection ref={canvasesRef} />
         <OutputSection

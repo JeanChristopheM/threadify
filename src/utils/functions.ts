@@ -58,8 +58,15 @@ export const drawLines = (
   }
 };
 
-export const getDots = (amount: number, w: number, h: number, mode: Mode) => {
-  const points: Map<number, Point> = new Map();
+export const getDots = (
+  amount: number,
+  w: number,
+  h: number,
+  mode: Mode,
+  lostWidth: number,
+  lostHeight: number
+) => {
+  let points: Map<number, Point> = new Map();
   if (mode === Mode.CIRCLE) {
     for (let i = 0; i < amount; i++) {
       const x = w / 2 + (w / 2) * Math.cos((2 * Math.PI * i) / amount);
@@ -67,6 +74,10 @@ export const getDots = (amount: number, w: number, h: number, mode: Mode) => {
       const point = new Point(Math.round(x), Math.round(y));
       points.set(i, point);
     }
+    points.forEach((p) => {
+      p.x += lostWidth / 2;
+      p.y += lostWidth / 2;
+    });
   } else {
     const xPins = (amount * w) / (2 * (h + w));
     const yPins = (amount - 2 * xPins) / 2;
@@ -88,6 +99,10 @@ export const getDots = (amount: number, w: number, h: number, mode: Mode) => {
     for (let i = 0; i < xPins; ++i) {
       points.set(points.size, new Point(w - Math.round(spaceX * i), 0));
     }
+    points.forEach((p) => {
+      p.x += lostWidth / 2;
+      p.y += lostHeight / 2;
+    });
   }
   return points;
 };
