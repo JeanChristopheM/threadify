@@ -1,16 +1,19 @@
 import React, { ChangeEvent } from "react";
 import { DEFAULT_POINTS } from "../../../utils/constants";
 import { getImageDataFromFile } from "../../../utils/functions";
+import { Mode } from "../../../utils/interfaces";
 
 type ISetupSectionProps = {
   imageRef: React.RefObject<HTMLCanvasElement>;
   generateHandler: (e: React.FormEvent) => void;
   setPointsAmount: (pointsAmount: number) => void;
+  modeSetter: (newMode: Mode) => void;
 };
 const SetupSection = ({
   imageRef,
   generateHandler,
   setPointsAmount,
+  modeSetter,
 }: ISetupSectionProps) => {
   //. Handlers
   //. --------
@@ -74,7 +77,11 @@ const SetupSection = ({
         </div>
         <div className="formGroup">
           <label htmlFor="modeSelector">Mode of ouput</label>
-          <select name="modeSelector" className="inputSelect">
+          <select
+            name="modeSelector"
+            className="inputSelect"
+            onChange={(e: any) => modeSetter(e.target.value)}
+          >
             <option value="circle">Circle</option>
             <option value="square">Square</option>
           </select>

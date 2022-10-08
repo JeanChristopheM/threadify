@@ -34,6 +34,7 @@ const Main = () => {
   const [steps, setSteps] = useState<number[]>([]);
   const [points, setPoints] = useState<Map<number, Point>>(new Map());
   const [lines, setLines] = useState<Map<number, Line>>(new Map());
+  const [mode, setMode] = useState<Mode>(Mode.CIRCLE);
 
   //. Local References
   //. ----------------
@@ -45,19 +46,9 @@ const Main = () => {
 
   //. Effects
   //. -------
-  // * Drawing lines when something changes
-  useEffect(() => {
-    if (points) handleDrawLines();
-  }, [steps, lines, drawingRef, iterations]);
-  // * Drawing points when points change
+  // * Changing points when mode/pointsAmount changes
   useEffect(() => {
     if (!drawingRef.current) return;
-    const modeInput = document.querySelector(
-      ".inputSelect"
-    ) as HTMLInputElement;
-    if (!modeInput) return;
-    const mode = modeInput.value as Mode;
-    if (!mode) return;
     setPoints(
       getDots(
         pointsAmount,
@@ -66,11 +57,21 @@ const Main = () => {
         mode
       )
     );
-    handleDrawPoints();
-  }, [pointsAmount, drawingRef.current]);
+  }, [pointsAmount, drawingRef.current, mode]);
+  // * Drawing lines when something changes
+  useEffect(() => {
+    if (points) handleDrawLines();
+  }, [steps, lines, drawingRef, iterations]);
+  // * Drawing points when they change
+  useEffect(() => {
+    if (points.size) handleDrawPoints();
+  }, [points]);
 
   //. Handlers
   //. --------
+  const handleModeChange = (newMode: Mode) => {
+    setMode(newMode);
+  };
   const handleDrawLines = () => {
     if (steps.length && points.size && lines.size && drawingRef.current) {
       const ctx = drawingRef.current.getContext("2d");
@@ -101,11 +102,8 @@ const Main = () => {
           imageRef.current.height
         ).data.buffer
       );
-      const target = e.target as unknown as HTMLInputElement[];
-      const mode = target[1].value as Mode;
 
       if (!pointsAmount) throw new Error("No points amount set in the form");
-      if (!mode) throw new Error("No mode set in the form");
       const points = getDots(
         pointsAmount,
         drawingRef.current.width,
@@ -148,6 +146,7 @@ const Main = () => {
           imageRef={imageRef}
           generateHandler={handleGenerate}
           setPointsAmount={setPointsAmount}
+          modeSetter={handleModeChange}
         />
         <CanvasSection ref={canvasesRef} />
         <OutputSection

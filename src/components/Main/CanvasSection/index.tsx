@@ -4,6 +4,7 @@ import {
   DEFAULT_CANVAS_HEIGHT,
 } from "../../../utils/constants";
 import Canvas from "../Canvas";
+import ImageCanvas from "./ImageCanvas";
 
 type ICanvasSectionProps = {};
 const CanvasSection = React.forwardRef<
@@ -92,13 +93,12 @@ const CanvasSection = React.forwardRef<
         </div>
       </div>
       <div className="canvasContainer">
-        <Canvas
+        <ImageCanvas
           ref={imageRef}
           id="imageCanvas"
           w={DEFAULT_CANVAS_WIDTH}
           h={DEFAULT_CANVAS_HEIGHT}
           opacity={imageOpacity}
-          draggable
         />
         <Canvas
           ref={drawingRef}

@@ -113,7 +113,7 @@ export const drawPoint = (
   color: string
 ) => {
   ctx.beginPath();
-  ctx.arc(x, y, 1, 0, Math.PI * 2, false);
+  ctx.arc(x, y, 2, 0, Math.PI * 2, false);
   ctx.fillStyle = color;
   ctx.fill();
 };
@@ -136,7 +136,7 @@ export const drawDots = (
 ) => {
   dots.forEach((dot, i) => {
     drawPoint(ctx, dot.x, dot.y, "#0dc143");
-    drawText(ctx, `${i}`, dot.x, dot.y, "#0000004d");
+    drawText(ctx, `${i}`, dot.x, dot.y, "#ff0f0f");
   });
 };
 export const getScaledImgSize = (iW: number, iH: number, cW: number) => {
