@@ -12,6 +12,7 @@ type IOutputSectionProps = {
   steps: number[];
   lines: Map<number, Line>;
   iterations: number;
+  className?: string;
 };
 
 const OutputSection = ({
@@ -19,6 +20,7 @@ const OutputSection = ({
   steps,
   lines,
   iterations,
+  className,
 }: IOutputSectionProps) => {
   //. State
   //. -----
@@ -87,7 +89,7 @@ const OutputSection = ({
   //. Return
   //. ------
   return (
-    <section className="mainSection--output">
+    <section className={`mainSection mainSection--output ${className}`}>
       <div className="sectionHeader">
         <h2>2. Output</h2>
       </div>

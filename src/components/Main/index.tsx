@@ -1,9 +1,7 @@
-import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import Line from "../../entities/Line";
 import Point from "../../entities/Point";
 import {
-  DEFAULT_CANVAS_HEIGHT,
-  DEFAULT_CANVAS_WIDTH,
   DEFAULT_FADE,
   DEFAULT_ITERATIONS,
   DEFAULT_MIN_DISTANCE,
@@ -21,6 +19,7 @@ import {
 import { Mode } from "../../utils/interfaces";
 import { generateSteps } from "../../utils/thread";
 import CanvasSection from "./CanvasSection";
+import FormSteps from "./FormSteps";
 import OutputSection from "./OutputSection";
 import SetupSection from "./SetupSection";
 import Spinner from "./Spinner";
@@ -28,6 +27,7 @@ import Spinner from "./Spinner";
 const Main = () => {
   //. Local State
   //. -----------
+  const [formStep, setFormStep] = useState<number>(1);
   const [generating, setGenerating] = useState<boolean>(false);
   const [pointsAmount, setPointsAmount] = useState<number>(DEFAULT_POINTS);
   const [iterations, setIterations] = useState<number>(DEFAULT_ITERATIONS);
@@ -67,6 +67,15 @@ const Main = () => {
   useEffect(() => {
     if (points.size) handleDrawPoints();
   }, [points]);
+
+  //* Form Steps
+  useEffect(() => {
+    const container = document.querySelector(".sectionWrapper");
+    if (!container) return;
+    const containerWidth = container.clientWidth;
+    console.log((formStep - 1) * containerWidth);
+    container.scrollTo((formStep - 1) * containerWidth, 0);
+  }, [formStep]);
 
   //. Handlers
   //. --------
@@ -139,21 +148,37 @@ const Main = () => {
     <main>
       <div className="mainContainer">
         <Spinner active={generating} />
-        <SetupSection
-          imageRef={imageRef}
-          generateHandler={handleGenerate}
-          setPointsAmount={setPointsAmount}
-          modeSetter={handleModeChange}
-          widthSetter={setCanvasWidth}
-          heightSetter={setCanvasHeight}
+        <FormSteps
+          formStep={formStep}
+          totalSteps={3}
+          setFormStep={setFormStep}
         />
-        <CanvasSection ref={canvasesRef} />
-        <OutputSection
-          setIterations={setIterations}
-          steps={steps}
-          lines={lines}
-          iterations={iterations}
-        />
+        <div className="sectionWrapper">
+          <SetupSection
+            imageRef={imageRef}
+            generateHandler={handleGenerate}
+            setPointsAmount={setPointsAmount}
+            modeSetter={handleModeChange}
+            widthSetter={setCanvasWidth}
+            heightSetter={setCanvasHeight}
+            className={formStep === 1 ? "active" : "left"}
+          />
+          <CanvasSection
+            ref={canvasesRef}
+            className={
+              formStep === 2 ? "active" : formStep === 1 ? "left" : "right"
+            }
+          />
+          <OutputSection
+            setIterations={setIterations}
+            steps={steps}
+            lines={lines}
+            iterations={iterations}
+            className={
+              formStep === 2 ? "active" : formStep === 1 ? "right" : "left"
+            }
+          />
+        </div>
       </div>
     </main>
   );

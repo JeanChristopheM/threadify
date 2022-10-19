@@ -1,12 +1,20 @@
 .mainContainer {
-  display: flex;
-  flex-wrap: wrap;
+  padding-inline: 4rem;
   z-index: -10;
   isolation: isolate;
   min-height: 75vh;
+  .sectionWrapper {
+    position: relative;
+    overflow: auto;
+    display: flex;
+    scroll-behavior: smooth;
+    & > * {
+      flex: 1 0 100%;
+      height: min-content;
+    }
+  }
   .mainSection {
     &--setup {
-      flex: 1 0 200px;
       .formGroup {
         display: flex;
         padding-block: 1rem;
@@ -29,7 +37,6 @@
       }
     }
     &--canvas {
-      flex: 0 0 600px;
       .canvasContainer {
         position: relative;
         margin-top: 1rem;
@@ -61,10 +68,75 @@
       }
     }
     &--output {
-      flex: 1 0 200px;
     }
+    // Transitions
+    // @keyframes slideLeft {
+    //   from {
+    //     transform: translateX(0%);
+    //     opacity: 1;
+    //   }
+    //   to {
+    //     transform: translateX(-120%);
+    //     opacity: 0;
+    //   }
+    // }
+    // @keyframes slideRight {
+    //   from {
+    //     transform: translateX(0%);
+    //     opacity: 1;
+    //   }
+    //   to {
+    //     transform: translateX(120%);
+    //     opacity: 0;
+    //   }
+    // }
+    // @keyframes slideFromLeftToMiddle {
+    //   from {
+    //     transform: translateX(-120%);
+    //     opacity: 0;
+    //   }
+    //   to {
+    //     transform: none;
+    //     opacity: 1;
+    //   }
+    // }
+    // @keyframes begone {
+    //   from {
+    //     display: block;
+    //   }
+    //   to {
+    //     display: none;
+    //   }
+    // }
+    // // Transitions
+    // &:not(.active) {
+    //   animation: 0s 0.2s begone forwards;
+    // }
+    // &.left {
+    //   animation: 0.2s slideLeft forwards;
+    // }
+    // &.active {
+    //   animation: 0.2s slideFromLeftToMiddle forwards;
+    // }
+    // &.right {
+    //   animation: 0.2s slideRight forwards;
+    // }
   }
 }
 .sectionHeader {
   padding: 0.5rem;
+}
+.formSteps {
+  display: flex;
+  justify-content: center;
+  &__circle {
+    padding: 1rem;
+    cursor: pointer;
+    .circle {
+      font-size: 3rem;
+      &--active {
+        font-weight: bold;
+      }
+    }
+  }
 }

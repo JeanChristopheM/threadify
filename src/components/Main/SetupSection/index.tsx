@@ -10,6 +10,7 @@ type ISetupSectionProps = {
   modeSetter: (newMode: Mode) => void;
   widthSetter: (height: number) => void;
   heightSetter: (width: number) => void;
+  className?: string;
 };
 const SetupSection = ({
   imageRef,
@@ -18,6 +19,7 @@ const SetupSection = ({
   modeSetter,
   widthSetter,
   heightSetter,
+  className,
 }: ISetupSectionProps) => {
   // . State
   // . -----
@@ -55,7 +57,7 @@ const SetupSection = ({
   //. Return
   //. ------
   return (
-    <section className="mainSection--setup">
+    <section className={`mainSection mainSection--setup ${className}`}>
       <div className="sectionHeader">
         <h2>1. Setup</h2>
       </div>

@@ -6,7 +6,9 @@ import {
 import Canvas from "../Canvas";
 import ImageCanvas from "./ImageCanvas";
 
-type ICanvasSectionProps = {};
+type ICanvasSectionProps = {
+  className?: string;
+};
 const CanvasSection = React.forwardRef<
   {
     drawingRef: React.RefObject<HTMLCanvasElement>;
@@ -14,7 +16,7 @@ const CanvasSection = React.forwardRef<
     imageRef: React.RefObject<HTMLCanvasElement>;
   },
   ICanvasSectionProps
->((_props, ref) => {
+>((props, ref) => {
   //. Local State
   //. -----------
   const [imageOpacity, setImageOpacity] = useState<number>(1);
@@ -53,7 +55,7 @@ const CanvasSection = React.forwardRef<
   //. Return
   //. ------
   return (
-    <section className="mainSection--canvas">
+    <section className={`mainSection mainSection--canvas ${props.className}`}>
       <div className="sectionHeader">
         <h2>Visualization</h2>
       </div>
