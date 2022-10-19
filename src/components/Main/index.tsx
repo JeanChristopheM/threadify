@@ -72,11 +72,17 @@ const Main = () => {
 
   //* Form Steps
   useEffect(() => {
-    const container = document.querySelector(".sectionWrapper");
-    if (!container || generating) return;
-    const containerWidth = container.clientWidth;
-    container.scrollTo((formStep - 1) * containerWidth, 0);
+    scrollSteps("smooth");
   }, [formStep, generating]);
+
+  //* Resize listener
+  useEffect(() => {
+    const handleResize = () => {
+      scrollSteps();
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  });
 
   //. Handlers
   //. --------
@@ -140,6 +146,16 @@ const Main = () => {
     setTimeout(() => {
       setGenerating(false);
     }, 10);
+  };
+  const scrollSteps = (behavior?: ScrollBehavior) => {
+    const container = document.querySelector(".sectionWrapper");
+    if (!container || generating) return;
+    const containerWidth = container.clientWidth;
+    container.scrollTo({
+      top: 0,
+      left: (formStep - 1) * containerWidth,
+      behavior,
+    });
   };
 
   //. Return

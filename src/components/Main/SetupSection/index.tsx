@@ -1,4 +1,5 @@
 import React, { ChangeEvent, useState } from "react";
+import { DEFAULT_IMAGE_SIZE } from "../../../utils/constants";
 import { Mode } from "../../../utils/interfaces";
 import CanvasSection from "../CanvasSection";
 import { HTMLCanvasWithImage } from "../CanvasSection/ImageCanvas";
@@ -35,6 +36,7 @@ const SetupSection = ({
   const [imageOpacity, setImageOpacity] = useState<number>(1);
   const [drawingOpacity, setDrawingOpacity] = useState<number>(1);
   const [canConfirm, setCanConfirm] = useState<boolean>(true);
+  const [imageSize, setImageSize] = useState<number>(DEFAULT_IMAGE_SIZE);
 
   //. Handlers
   //. --------
@@ -72,12 +74,13 @@ const SetupSection = ({
           setImageOpacity={setImageOpacity}
           setDrawingOpacity={setDrawingOpacity}
         />
-        <ImageControls />
+        <ImageControls imageSize={imageSize} setImageSize={setImageSize} />
       </div>
 
       <CanvasSection
         ref={canvasesRef}
         imageOpacity={imageOpacity}
+        imageSize={imageSize}
         drawingOpacity={drawingOpacity}
       />
 

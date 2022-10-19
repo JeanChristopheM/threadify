@@ -1,5 +1,5 @@
 import React, { useLayoutEffect } from "react";
-import { clearCtx } from "../../../../utils/functions";
+import { clearCtx, resizeImage } from "../../../../utils/functions";
 
 interface IImageCanvasProps {
   w: number;
@@ -10,6 +10,7 @@ interface IImageCanvasProps {
   id?: string;
   className?: string;
   opacity?: number;
+  sizeMultiplier: number;
 }
 
 export interface HTMLCanvasWithImage extends HTMLCanvasElement {
@@ -20,9 +21,11 @@ export interface HTMLCanvasWithImage extends HTMLCanvasElement {
   };
 }
 const ImageCanvas = React.forwardRef<HTMLCanvasElement, IImageCanvasProps>(
-  ({ w, h, id, className, opacity }, ref) => {
+  ({ w, h, id, className, opacity, sizeMultiplier }, ref) => {
     const canvas: HTMLCanvasWithImage = (ref as any).current;
 
+    // . Handlers
+    // . --------
     // * Drag & Drop functionality
     const mouseDownHandler = (e: any) => {
       const { offsetX: mouseX, offsetY: mouseY } = e;
@@ -127,10 +130,9 @@ const ImageCanvas = React.forwardRef<HTMLCanvasElement, IImageCanvasProps>(
     };
     // . Effects
     // . -------
+
     useLayoutEffect(() => {
-      if (!ref) return;
-      const canvas: HTMLCanvasElement = (ref as any).current;
-      if (!canvas) return;
+      if (!ref || !canvas) return;
       canvas.width = w;
       canvas.height = h;
       canvas.style.border = "1px solid black";
@@ -147,8 +149,17 @@ const ImageCanvas = React.forwardRef<HTMLCanvasElement, IImageCanvasProps>(
         canvas.removeEventListener("mousemove", mouseMoveHandler);
       };
     }, [canvas]);
+    useLayoutEffect(() => {
+      if (!ref || !canvas) return;
+      resizeImage(
+        ref as React.ForwardedRef<HTMLCanvasWithImage>,
+        sizeMultiplier
+      );
+    }, [canvas, sizeMultiplier]);
+
     // . Return
     // . ------
+
     return (
       <canvas
         ref={ref}

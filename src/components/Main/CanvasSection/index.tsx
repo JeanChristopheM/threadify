@@ -10,6 +10,7 @@ type ICanvasSectionProps = {
   className?: string;
   imageOpacity: number;
   drawingOpacity: number;
+  imageSize: number;
 };
 const CanvasSection = React.forwardRef<
   {
@@ -18,7 +19,7 @@ const CanvasSection = React.forwardRef<
     imageRef: React.RefObject<HTMLCanvasElement>;
   },
   ICanvasSectionProps
->((props, ref) => {
+>(({ className, imageOpacity, drawingOpacity, imageSize }, ref) => {
   //. Refs
   //. ----
   const { drawingRef, pointsRef, imageRef } = (ref as any)?.current;
@@ -35,7 +36,8 @@ const CanvasSection = React.forwardRef<
               id="imageCanvas"
               w={DEFAULT_CANVAS_WIDTH}
               h={DEFAULT_CANVAS_HEIGHT}
-              opacity={props.imageOpacity}
+              opacity={imageOpacity}
+              sizeMultiplier={imageSize}
             />
             <Canvas
               ref={drawingRef}
@@ -43,7 +45,7 @@ const CanvasSection = React.forwardRef<
               className="backgroundCanvas"
               w={DEFAULT_CANVAS_WIDTH}
               h={DEFAULT_CANVAS_HEIGHT}
-              opacity={props.drawingOpacity}
+              opacity={drawingOpacity}
             />
             <Canvas
               ref={pointsRef}

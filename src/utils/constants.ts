@@ -13,3 +13,5 @@ export const DEFAULT_MIN_DISTANCE = 10;
 
 export const DEFAULT_CANVAS_WIDTH = 600;
 export const DEFAULT_CANVAS_HEIGHT = 600;
+
+export const DEFAULT_IMAGE_SIZE = 100;

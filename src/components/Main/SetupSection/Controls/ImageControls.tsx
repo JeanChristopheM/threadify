@@ -1,12 +1,20 @@
 import React from "react";
 
-const ImageControls = () => {
+interface IImageControlsProps {
+  imageSize: number;
+  setImageSize: React.Dispatch<React.SetStateAction<number>>;
+}
+
+const ImageControls: React.FC<IImageControlsProps> = ({
+  imageSize,
+  setImageSize,
+}) => {
   // . Handlers
   // . --------
 
   const handleChangeSize = (e: React.ChangeEvent) => {
     const target = e.target as HTMLInputElement;
-    console.log(target.value);
+    setImageSize(Number(target.value));
   };
 
   // . Return
@@ -25,8 +33,8 @@ const ImageControls = () => {
               type="range"
               name="size"
               min="0"
-              max="100"
-              defaultValue="100"
+              max="200"
+              defaultValue={imageSize}
               onChange={handleChangeSize}
             />
           </div>

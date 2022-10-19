@@ -1,3 +1,4 @@
+import { HTMLCanvasWithImage } from "../components/Main/CanvasSection/ImageCanvas";
 import Line from "../entities/Line";
 import Point from "../entities/Point";
 import { Mode } from "./interfaces";
@@ -214,3 +215,18 @@ export const getImageDataFromFile = async (
     };
     fr.readAsDataURL(file);
   });
+
+export const resizeImage = (
+  ref: React.ForwardedRef<HTMLCanvasWithImage>,
+  sizeMultiplier: number
+) => {
+  if (!ref) return;
+  const canvas: HTMLCanvasWithImage = (ref as any).current;
+  if (!canvas || !canvas.file) return;
+  const lastPosMatches = canvas.className.match(/lastPos[X-Y]:-?\d+/g);
+  if (!lastPosMatches) return;
+  const lastPosX = Number(lastPosMatches[0].split(":")[1]);
+  const lastPosY = Number(lastPosMatches[1].split(":")[1]);
+  // canvas.file.width *= sizeMultiplier / 100;
+  console.log({ x: lastPosX, y: lastPosY, canvas: canvas.file.width });
+};
