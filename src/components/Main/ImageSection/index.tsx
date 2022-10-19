@@ -76,8 +76,8 @@ const ImageSection: React.FC<IImageSectionProps> = ({
       <div className="sectionHeader">
         <h2>First choose your image</h2>
       </div>
+      <InputFile fileChangeHandler={handleFileChange} />
       <div className="subSection">
-        <InputFile fileChangeHandler={handleFileChange} />
         <div className="subSection__content">
           <Canvas
             ref={previewRef}

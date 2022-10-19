@@ -11,10 +11,12 @@ const InputFile: React.FC<IInputFileProps> = ({ fileChangeHandler }) => {
     input.onchange = fileChangeHandler;
   };
   return (
-    <div>
-      <button type="button" onClick={handleButtonClick}>
-        Upload Image
-      </button>
+    <div className="subSection">
+      <div className="subSection__content">
+        <button type="button" onClick={handleButtonClick}>
+          Upload Image
+        </button>
+      </div>
     </div>
   );
 };

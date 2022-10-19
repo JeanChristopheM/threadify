@@ -60,18 +60,20 @@ const SetupSection = ({
         <h2>Change parameters</h2>
       </div>
 
-      <NailsControls
-        handleChangePoints={handleChangePoints}
-        handleChangeMode={modeSetter}
-        widthSetter={widthSetter}
-        heightSetter={heightSetter}
-      />
-      <OpacityControls
-        imageOpacity={imageOpacity}
-        drawingOpacity={drawingOpacity}
-        setImageOpacity={setImageOpacity}
-        setDrawingOpacity={setDrawingOpacity}
-      />
+      <div className="controls">
+        <NailsControls
+          handleChangePoints={handleChangePoints}
+          handleChangeMode={modeSetter}
+          widthSetter={widthSetter}
+          heightSetter={heightSetter}
+        />
+        <OpacityControls
+          imageOpacity={imageOpacity}
+          drawingOpacity={drawingOpacity}
+          setImageOpacity={setImageOpacity}
+          setDrawingOpacity={setDrawingOpacity}
+        />
+      </div>
 
       <CanvasSection
         ref={canvasesRef}
