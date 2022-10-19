@@ -12,7 +12,7 @@ const FormSteps: React.FC<IFormStepsProps> = ({
   setFormStep,
 }) => {
   return (
-    <div className="formSteps">
+    <div className="formSteps flex-row">
       {new Array(totalSteps).fill(1).map((s, i) => (
         <div
           key={`formStep${i}`}

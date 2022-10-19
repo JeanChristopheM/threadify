@@ -24,16 +24,15 @@
       }
 
       &__header {
-        padding-bottom: 1rem;
         display: flex;
         justify-content: center;
+        padding-bottom: 1rem;
       }
       &__content {
         padding-bottom: 1rem;
       }
     }
     .controls {
-      display: flex;
       gap: 2rem;
       .subSection {
         & + .subSection {
@@ -153,7 +152,6 @@
   // }
 }
 .formSteps {
-  display: flex;
   justify-content: center;
   &__circle {
     padding: 1rem;
@@ -184,5 +182,15 @@
   }
   #imageCanvas {
     z-index: 0;
+  }
+}
+.flex {
+  &-row {
+    display: flex;
+    gap: 1rem;
+  }
+  &-column {
+    display: flex;
+    flex-direction: column;
   }
 }

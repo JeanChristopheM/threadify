@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useLayoutEffect, useRef, useState } from "react";
+import React from "react";
 import {
   DEFAULT_CANVAS_WIDTH,
   DEFAULT_CANVAS_HEIGHT,

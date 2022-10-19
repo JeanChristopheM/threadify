@@ -1,9 +1,8 @@
 import React, { ChangeEvent, useState } from "react";
-import { DEFAULT_POINTS } from "../../../utils/constants";
-import { getImageDataFromFile } from "../../../utils/functions";
 import { Mode } from "../../../utils/interfaces";
 import CanvasSection from "../CanvasSection";
 import { HTMLCanvasWithImage } from "../CanvasSection/ImageCanvas";
+import ImageControls from "./Controls/ImageControls";
 import NailsControls from "./Controls/NailsControls";
 import OpacityControls from "./Controls/OpacityControls";
 
@@ -60,7 +59,7 @@ const SetupSection = ({
         <h2>Change parameters</h2>
       </div>
 
-      <div className="controls">
+      <div className="controls flex-row">
         <NailsControls
           handleChangePoints={handleChangePoints}
           handleChangeMode={modeSetter}
@@ -73,6 +72,7 @@ const SetupSection = ({
           setImageOpacity={setImageOpacity}
           setDrawingOpacity={setDrawingOpacity}
         />
+        <ImageControls />
       </div>
 
       <CanvasSection
@@ -82,8 +82,8 @@ const SetupSection = ({
       />
 
       <div className="subSection">
-        <div className="subSection__content">
-          <button type="button" onClick={handleConfirm} disabled={!canConfirm}>
+        <div className="subSection__content flex-row">
+          <button type="button" onClick={handleConfirm}>
             Generate
           </button>
           <button
