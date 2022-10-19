@@ -1,5 +1,5 @@
 import React, { useLayoutEffect } from "react";
-import { clearCtx, getImageDataFromFile } from "../../../utils/functions";
+import { clearCtx, getImageDataFromFile } from "../../../../utils/functions";
 
 type ICanvasProps = {
   w: number;

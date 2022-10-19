@@ -162,11 +162,11 @@ export const getScaledImgSize = (iW: number, iH: number, cW: number) => {
   };
 
   if (iW >= iH) {
-    result.width = cW * ratio;
-    result.height = cW;
-  } else {
     result.width = cW;
     result.height = cW / ratio;
+  } else {
+    result.width = cW * ratio;
+    result.height = cW;
   }
 
   return result;

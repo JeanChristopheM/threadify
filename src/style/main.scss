@@ -16,7 +16,7 @@
   font-family: "playfair_displayregular", Arial, sans-serif;
 }
 body {
-  background-color: $clr-bg;
+  background-color: $clr-main;
   position: relative;
 }
 h1 {
@@ -40,12 +40,14 @@ h3 {
 header {
   position: relative;
   padding: 1rem;
-  min-height: 25vh;
+  min-height: 6rem;
   color: $clr-main;
+  background-color: $clr-bg;
 }
 main {
-  height: 100%;
+  min-height: 100%;
   background-color: $clr-main;
+  overflow: hidden;
 }
 button {
   padding: 1rem;

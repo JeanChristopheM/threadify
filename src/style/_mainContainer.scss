@@ -1,11 +1,8 @@
 .mainContainer {
-  padding-inline: 4rem;
-  z-index: -10;
   isolation: isolate;
-  min-height: 75vh;
   .sectionWrapper {
     position: relative;
-    overflow: auto;
+    overflow: hidden;
     display: flex;
     scroll-behavior: smooth;
     & > * {
@@ -14,117 +11,137 @@
     }
   }
   .mainSection {
-    &--setup {
-      .formGroup {
+    padding-block: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .sectionHeader {
+      padding-bottom: 1rem;
+    }
+    .subSection {
+      & + .subSection {
+        padding-top: 1rem;
+      }
+
+      &__header {
+        padding-bottom: 1rem;
         display: flex;
-        padding-block: 1rem;
-        flex-wrap: wrap;
-        &.separator {
-          border-bottom: 1px dashed grey;
-        }
-        & > * {
-          flex: 1 1 100%;
-        }
-        &.submitButton {
-          justify-content: center;
-        }
+        justify-content: center;
       }
-      .subSection {
-        padding: 1rem;
-        &__header {
-          margin-bottom: 0.3rem;
-        }
+      &__content {
+        padding-bottom: 1rem;
       }
     }
-    &--canvas {
-      .canvasContainer {
-        position: relative;
-        margin-top: 1rem;
-        .backgroundCanvas {
-          position: absolute;
-          top: 0;
-          left: 0;
-        }
-        #drawingCanvas {
-          z-index: 5;
-          pointer-events: none;
-        }
-        #pointsCanvas {
-          z-index: 2;
-          pointer-events: none;
-        }
-        #imageCanvas {
-          z-index: 0;
-        }
-      }
-      .canvasControls {
-        display: flex;
-        .inputGroup {
-          flex: 1 1 50%;
-          &.switchButton {
-            flex: 0 1 max-content;
-          }
-        }
-      }
-    }
-    &--output {
-    }
-    // Transitions
-    // @keyframes slideLeft {
-    //   from {
-    //     transform: translateX(0%);
-    //     opacity: 1;
-    //   }
-    //   to {
-    //     transform: translateX(-120%);
-    //     opacity: 0;
-    //   }
-    // }
-    // @keyframes slideRight {
-    //   from {
-    //     transform: translateX(0%);
-    //     opacity: 1;
-    //   }
-    //   to {
-    //     transform: translateX(120%);
-    //     opacity: 0;
-    //   }
-    // }
-    // @keyframes slideFromLeftToMiddle {
-    //   from {
-    //     transform: translateX(-120%);
-    //     opacity: 0;
-    //   }
-    //   to {
-    //     transform: none;
-    //     opacity: 1;
-    //   }
-    // }
-    // @keyframes begone {
-    //   from {
-    //     display: block;
-    //   }
-    //   to {
-    //     display: none;
-    //   }
-    // }
-    // // Transitions
-    // &:not(.active) {
-    //   animation: 0s 0.2s begone forwards;
-    // }
-    // &.left {
-    //   animation: 0.2s slideLeft forwards;
-    // }
-    // &.active {
-    //   animation: 0.2s slideFromLeftToMiddle forwards;
-    // }
-    // &.right {
-    //   animation: 0.2s slideRight forwards;
-    // }
   }
-}
-.sectionHeader {
-  padding: 0.5rem;
+  // .mainSection {
+  //   &--setup {
+  //     .formGroup {
+  //       display: flex;
+  //       padding-block: 1rem;
+  //       flex-wrap: wrap;
+  //       &.separator {
+  //         border-bottom: 1px dashed grey;
+  //       }
+  //       & > * {
+  //         flex: 1 1 100%;
+  //       }
+  //       &.submitButton {
+  //         justify-content: center;
+  //       }
+  //     }
+  //     .subSection {
+  //       padding: 1rem;
+  //       &__header {
+  //         margin-bottom: 0.3rem;
+  //       }
+  //     }
+  //   }
+  //   &--canvas {
+  //     .canvasContainer {
+  //       position: relative;
+  //       margin-top: 1rem;
+  //       .backgroundCanvas {
+  //         position: absolute;
+  //         top: 0;
+  //         left: 0;
+  //       }
+  //       #drawingCanvas {
+  //         z-index: 5;
+  //         pointer-events: none;
+  //       }
+  //       #pointsCanvas {
+  //         z-index: 2;
+  //         pointer-events: none;
+  //       }
+  //       #imageCanvas {
+  //         z-index: 0;
+  //       }
+  //     }
+  //     .canvasControls {
+  //       display: flex;
+  //       .inputGroup {
+  //         flex: 1 1 50%;
+  //         &.switchButton {
+  //           flex: 0 1 max-content;
+  //         }
+  //       }
+  //     }
+  //   }
+  //   &--output {
+  //   }
+  //   // Transitions
+  //   // @keyframes slideLeft {
+  //   //   from {
+  //   //     transform: translateX(0%);
+  //   //     opacity: 1;
+  //   //   }
+  //   //   to {
+  //   //     transform: translateX(-120%);
+  //   //     opacity: 0;
+  //   //   }
+  //   // }
+  //   // @keyframes slideRight {
+  //   //   from {
+  //   //     transform: translateX(0%);
+  //   //     opacity: 1;
+  //   //   }
+  //   //   to {
+  //   //     transform: translateX(120%);
+  //   //     opacity: 0;
+  //   //   }
+  //   // }
+  //   // @keyframes slideFromLeftToMiddle {
+  //   //   from {
+  //   //     transform: translateX(-120%);
+  //   //     opacity: 0;
+  //   //   }
+  //   //   to {
+  //   //     transform: none;
+  //   //     opacity: 1;
+  //   //   }
+  //   // }
+  //   // @keyframes begone {
+  //   //   from {
+  //   //     display: block;
+  //   //   }
+  //   //   to {
+  //   //     display: none;
+  //   //   }
+  //   // }
+  //   // // Transitions
+  //   // &:not(.active) {
+  //   //   animation: 0s 0.2s begone forwards;
+  //   // }
+  //   // &.left {
+  //   //   animation: 0.2s slideLeft forwards;
+  //   // }
+  //   // &.active {
+  //   //   animation: 0.2s slideFromLeftToMiddle forwards;
+  //   // }
+  //   // &.right {
+  //   //   animation: 0.2s slideRight forwards;
+  //   // }
+  // }
 }
 .formSteps {
   display: flex;
@@ -138,5 +155,25 @@
         font-weight: bold;
       }
     }
+  }
+}
+.canvasContainer {
+  position: relative;
+  margin-top: 1rem;
+  .backgroundCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  #drawingCanvas {
+    z-index: 5;
+    pointer-events: none;
+  }
+  #pointsCanvas {
+    z-index: 2;
+    pointer-events: none;
+  }
+  #imageCanvas {
+    z-index: 0;
   }
 }

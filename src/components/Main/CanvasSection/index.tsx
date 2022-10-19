@@ -3,7 +3,7 @@ import {
   DEFAULT_CANVAS_WIDTH,
   DEFAULT_CANVAS_HEIGHT,
 } from "../../../utils/constants";
-import Canvas from "../Canvas";
+import Canvas from "./Canvas";
 import ImageCanvas from "./ImageCanvas";
 
 type ICanvasSectionProps = {
@@ -55,70 +55,76 @@ const CanvasSection = React.forwardRef<
   //. Return
   //. ------
   return (
-    <section className={`mainSection mainSection--canvas ${props.className}`}>
-      <div className="sectionHeader">
-        <h2>Visualization</h2>
+    <>
+      <div className="subSection">
+        <div className="subSection__header">
+          <h3>Opacity</h3>
+        </div>
+        <div className="subSection__content">
+          <div className="inputGroup">
+            <label htmlFor="imageOpacity">Image</label>
+            <div className="inputRange_container">
+              <input
+                type="range"
+                name="imageOpacity"
+                min="0"
+                max="100"
+                defaultValue="100"
+                onChange={handleOpacityChange}
+                ref={imageSliderRef}
+              />
+            </div>
+          </div>
+          <div className="inputGroup switchButton">
+            <button type="button" onClick={handleSwitchOpacity}>
+              SWITCH
+            </button>
+          </div>
+          <div className="inputGroup">
+            <label htmlFor="drawingOpacity">Thread</label>
+            <div className="inputRange_container">
+              <input
+                type="range"
+                name="drawingOpacity"
+                min="0"
+                max="100"
+                defaultValue="100"
+                onChange={handleOpacityChange}
+                ref={drawingSliderRef}
+              />
+            </div>
+          </div>
+        </div>
       </div>
-      <div className="canvasControls">
-        <div className="inputGroup">
-          <label htmlFor="imageOpacity">Image</label>
-          <div className="inputRange_container">
-            <input
-              type="range"
-              name="imageOpacity"
-              min="0"
-              max="100"
-              defaultValue="100"
-              onChange={handleOpacityChange}
-              ref={imageSliderRef}
+      <div className="subSection">
+        <div className="subSection__content">
+          <div className="canvasContainer">
+            <ImageCanvas
+              ref={imageRef}
+              id="imageCanvas"
+              w={DEFAULT_CANVAS_WIDTH}
+              h={DEFAULT_CANVAS_HEIGHT}
+              opacity={imageOpacity}
+            />
+            <Canvas
+              ref={drawingRef}
+              id="drawingCanvas"
+              className="backgroundCanvas"
+              w={DEFAULT_CANVAS_WIDTH}
+              h={DEFAULT_CANVAS_HEIGHT}
+              opacity={drawingOpacity}
+            />
+            <Canvas
+              ref={pointsRef}
+              id="pointsCanvas"
+              className="backgroundCanvas"
+              w={DEFAULT_CANVAS_WIDTH}
+              h={DEFAULT_CANVAS_HEIGHT}
             />
           </div>
         </div>
-        <div className="inputGroup switchButton">
-          <button type="button" onClick={handleSwitchOpacity}>
-            SWITCH
-          </button>
-        </div>
-        <div className="inputGroup">
-          <label htmlFor="drawingOpacity">Thread</label>
-          <div className="inputRange_container">
-            <input
-              type="range"
-              name="drawingOpacity"
-              min="0"
-              max="100"
-              defaultValue="100"
-              onChange={handleOpacityChange}
-              ref={drawingSliderRef}
-            />
-          </div>
-        </div>
       </div>
-      <div className="canvasContainer">
-        <ImageCanvas
-          ref={imageRef}
-          id="imageCanvas"
-          w={DEFAULT_CANVAS_WIDTH}
-          h={DEFAULT_CANVAS_HEIGHT}
-          opacity={imageOpacity}
-        />
-        <Canvas
-          ref={drawingRef}
-          id="drawingCanvas"
-          className="backgroundCanvas"
-          w={DEFAULT_CANVAS_WIDTH}
-          h={DEFAULT_CANVAS_HEIGHT}
-          opacity={drawingOpacity}
-        />
-        <Canvas
-          ref={pointsRef}
-          id="pointsCanvas"
-          className="backgroundCanvas"
-          w={DEFAULT_CANVAS_WIDTH}
-          h={DEFAULT_CANVAS_HEIGHT}
-        />
-      </div>
-    </section>
+    </>
   );
 });
 

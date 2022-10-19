@@ -11,9 +11,17 @@ interface IImageCanvasProps {
   className?: string;
   opacity?: number;
 }
+
+export interface HTMLCanvasWithImage extends HTMLCanvasElement {
+  file: {
+    img: HTMLImageElement;
+    width: number;
+    height: number;
+  };
+}
 const ImageCanvas = React.forwardRef<HTMLCanvasElement, IImageCanvasProps>(
   ({ w, h, id, className, opacity }, ref) => {
-    const canvas: HTMLCanvasElement = (ref as any).current;
+    const canvas: HTMLCanvasWithImage = (ref as any).current;
 
     // * Drag & Drop functionality
     const mouseDownHandler = (e: any) => {
@@ -46,15 +54,16 @@ const ImageCanvas = React.forwardRef<HTMLCanvasElement, IImageCanvasProps>(
 
       let endedUpX = lastPosX + offsetX;
       let endedUpY = lastPosY + offsetY;
-      // @ts-ignore
-      const minX = canvas.width - canvas.file.width;
-      // @ts-ignore
-      const minY = canvas.height - canvas.file.height;
+
+      const minX = 0 - canvas.file.width;
+      const minY = 0 - canvas.file.height;
+      const maxX = canvas.width;
+      const maxY = canvas.height;
 
       if (endedUpX < minX) endedUpX = minX;
       if (endedUpY < minY) endedUpY = minY;
-      if (endedUpX > 0) endedUpX = 0;
-      if (endedUpY > 0) endedUpY = 0;
+      if (endedUpX > maxX) endedUpX = maxX;
+      if (endedUpY > maxY) endedUpY = maxY;
 
       canvas.className = canvas.className.replace(
         /finalX:-?\d+/,
@@ -91,28 +100,25 @@ const ImageCanvas = React.forwardRef<HTMLCanvasElement, IImageCanvasProps>(
         let drawX = lastPosX + offsetX;
         let drawY = lastPosY + offsetY;
 
-        // @ts-ignore
-        const minX = canvas.width - canvas.file.width;
-        // @ts-ignore
-        const minY = canvas.height - canvas.file.height;
+        const minX = 0 - canvas.file.width;
+        const minY = 0 - canvas.file.height;
+        const maxX = canvas.width;
+        const maxY = canvas.height;
 
         if (drawX < minX) drawX = minX;
         if (drawY < minY) drawY = minY;
-        if (drawX > 0) drawX = 0;
-        if (drawY > 0) drawY = 0;
-        // @ts-ignore
+        if (drawX > maxX) drawX = maxX;
+        if (drawY > maxY) drawY = maxY;
+
         if (canvas.file) {
           const ctx = canvas.getContext("2d");
           if (ctx) {
             clearCtx(ctx);
             ctx.drawImage(
-              // @ts-ignore
               canvas.file.img,
               drawX,
               drawY,
-              // @ts-ignore
               canvas.file.width,
-              // @ts-ignore
               canvas.file.height
             );
           }
