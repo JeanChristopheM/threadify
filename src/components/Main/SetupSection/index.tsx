@@ -4,6 +4,8 @@ import { getImageDataFromFile } from "../../../utils/functions";
 import { Mode } from "../../../utils/interfaces";
 import CanvasSection from "../CanvasSection";
 import { HTMLCanvasWithImage } from "../CanvasSection/ImageCanvas";
+import NailsControls from "./Controls/NailsControls";
+import OpacityControls from "./Controls/OpacityControls";
 
 type ISetupSectionProps = {
   generateHandler: () => void;
@@ -31,9 +33,9 @@ const SetupSection = ({
 }: ISetupSectionProps) => {
   // . State
   // . -----
-
+  const [imageOpacity, setImageOpacity] = useState<number>(1);
+  const [drawingOpacity, setDrawingOpacity] = useState<number>(1);
   const [canConfirm, setCanConfirm] = useState<boolean>(true);
-  const [heightHidden, setHeightHidden] = useState<boolean>(true);
 
   //. Handlers
   //. --------
@@ -57,70 +59,26 @@ const SetupSection = ({
       <div className="sectionHeader">
         <h2>Change parameters</h2>
       </div>
-      <div className="subSection">
-        <div className="subSection__header">
-          <h3>Nails</h3>
-        </div>
-        <div className="subSection__content">
-          <div className="formGroup separator">
-            <label htmlFor="pointsSlider">
-              Number of points :{" "}
-              <span id="pointsAmountSpan">{DEFAULT_POINTS}</span>
-            </label>
-            <div className="inputRange_container">
-              <input
-                type="range"
-                name="pointsSlider"
-                min="50"
-                max="400"
-                defaultValue={DEFAULT_POINTS}
-                onChange={handleChangePoints}
-              />
-            </div>
-          </div>
-          <div className="formGroup separator">
-            <label htmlFor="modeSelector">Mode of ouput</label>
-            <select
-              name="modeSelector"
-              className="inputSelect"
-              onChange={(e: any) => {
-                modeSetter(e.target.value);
-                setHeightHidden(e.target.value === Mode.CIRCLE ? true : false);
-              }}
-            >
-              <option value="circle">Circle</option>
-              <option value="square">Square</option>
-            </select>
-          </div>
-          <div className={`formGroup ${heightHidden ? "separator" : ""}`}>
-            <label htmlFor="width">Width</label>
-            <input
-              type="range"
-              name="width"
-              min="50"
-              max="100"
-              defaultValue="100"
-              onChange={(e: ChangeEvent) =>
-                widthSetter(Number((e.target as HTMLInputElement).value))
-              }
-            />
-          </div>
-          <div className={`formGroup ${heightHidden ? "hidden" : "separator"}`}>
-            <label htmlFor="height">Height</label>
-            <input
-              type="range"
-              name="height"
-              min="50"
-              max="100"
-              defaultValue="100"
-              onChange={(e: ChangeEvent) =>
-                heightSetter(Number((e.target as HTMLInputElement).value))
-              }
-            />
-          </div>
-        </div>
-      </div>
-      <CanvasSection ref={canvasesRef} />
+
+      <NailsControls
+        handleChangePoints={handleChangePoints}
+        handleChangeMode={modeSetter}
+        widthSetter={widthSetter}
+        heightSetter={heightSetter}
+      />
+      <OpacityControls
+        imageOpacity={imageOpacity}
+        drawingOpacity={drawingOpacity}
+        setImageOpacity={setImageOpacity}
+        setDrawingOpacity={setDrawingOpacity}
+      />
+
+      <CanvasSection
+        ref={canvasesRef}
+        imageOpacity={imageOpacity}
+        drawingOpacity={drawingOpacity}
+      />
+
       <div className="subSection">
         <div className="subSection__content">
           <button type="button" onClick={handleConfirm} disabled={!canConfirm}>
