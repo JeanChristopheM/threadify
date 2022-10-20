@@ -29,8 +29,17 @@ const ImageCanvas = React.forwardRef<HTMLCanvasElement, IImageCanvasProps>(
     // . Handlers
     // . --------
     // * Drag & Drop functionality
-    const mouseDownHandler = (e: any) => {
-      const { offsetX: mouseX, offsetY: mouseY } = e;
+    const mouseDownHandler = (e?: any, x?: number, y?: number) => {
+      let mouseX: number;
+      let mouseY: number;
+      if (x && y) {
+        mouseX = x;
+        mouseY = y;
+      } else {
+        const { offsetX, offsetY } = e;
+        mouseX = offsetX;
+        mouseY = offsetY;
+      }
       canvas.className = canvas.className.replace("still", "dragging");
       canvas.className = canvas.className.replace(
         /clicX:\d+/,
@@ -41,8 +50,17 @@ const ImageCanvas = React.forwardRef<HTMLCanvasElement, IImageCanvasProps>(
         `clicY:${mouseY}`
       );
     };
-    const mouseUpHandler = (e: any) => {
-      const { offsetX: mouseX, offsetY: mouseY } = e;
+    const mouseUpHandler = (e?: any, x?: number, y?: number) => {
+      let mouseX: number;
+      let mouseY: number;
+      if (x && y) {
+        mouseX = x;
+        mouseY = y;
+      } else {
+        const { offsetX, offsetY } = e;
+        mouseX = offsetX;
+        mouseY = offsetY;
+      }
       canvas.className = canvas.className.replace("dragging", "still");
 
       const clicMatches = canvas.className.match(/clic[X-Y]:-?\d+/g);
@@ -87,9 +105,18 @@ const ImageCanvas = React.forwardRef<HTMLCanvasElement, IImageCanvasProps>(
         `lastPosY:${endedUpY}`
       );
     };
-    const mouseMoveHandler = (e: any) => {
+    const mouseMoveHandler = (e?: any, x?: number, y?: number) => {
       if (canvas.className.includes("dragging")) {
-        const { offsetX: mouseX, offsetY: mouseY } = e;
+        let mouseX: number;
+        let mouseY: number;
+        if (x && y) {
+          mouseX = x;
+          mouseY = y;
+        } else {
+          const { offsetX, offsetY } = e;
+          mouseX = offsetX;
+          mouseY = offsetY;
+        }
         const clicMatches = canvas.className.match(/clic[X-Y]:-?\d+/g);
         const finalMatches = canvas.className.match(/final[X-Y]:-?\d+/g);
         const lastPosMatches = canvas.className.match(/lastPos[X-Y]:-?\d+/g);
@@ -130,6 +157,30 @@ const ImageCanvas = React.forwardRef<HTMLCanvasElement, IImageCanvasProps>(
         }
       }
     };
+    const touchDownHandler = (e: any) => {
+      e.preventDefault();
+      const { targetTouches } = e;
+      if (targetTouches.length > 1) return;
+      const touch = targetTouches[0];
+      const { left, top } = canvas.getBoundingClientRect();
+      mouseDownHandler(undefined, touch.clientX - left, touch.clientY - top);
+    };
+    const touchUpHandler = (e: any) => {
+      e.preventDefault();
+      const { changedTouches } = e;
+      if (changedTouches.length > 1) return;
+      const touch = changedTouches[0];
+      const { left, top } = canvas.getBoundingClientRect();
+      mouseUpHandler(undefined, touch.clientX - left, touch.clientY - top);
+    };
+    const touchMoveHandler = (e: any) => {
+      e.preventDefault();
+      const { changedTouches } = e;
+      if (changedTouches.length > 1) return;
+      const touch = changedTouches[0];
+      const { left, top } = canvas.getBoundingClientRect();
+      mouseMoveHandler(undefined, touch.clientX - left, touch.clientY - top);
+    };
     // . Effects
     // . -------
 
@@ -142,13 +193,16 @@ const ImageCanvas = React.forwardRef<HTMLCanvasElement, IImageCanvasProps>(
         "still-clicX:0-clicY:0-finalX:0-finalY:0-lastPosX:0-lastPosY:0"
       );
 
-      canvas.addEventListener("pointerdown", mouseDownHandler);
+      canvas.addEventListener("touchstart", touchDownHandler);
+      canvas.addEventListener("touchend", touchUpHandler);
+      canvas.addEventListener("touchmove", touchMoveHandler);
+      canvas.addEventListener("mousedown", mouseDownHandler);
       canvas.addEventListener("mouseup", mouseUpHandler);
       canvas.addEventListener("mousemove", mouseMoveHandler);
       return () => {
-        canvas.removeEventListener("pointerdown", mouseDownHandler);
-        canvas.removeEventListener("mouseup", mouseUpHandler);
-        canvas.removeEventListener("mousemove", mouseMoveHandler);
+        canvas.removeEventListener("touchstart", mouseDownHandler);
+        canvas.removeEventListener("touchend", mouseUpHandler);
+        canvas.removeEventListener("touchmove", mouseMoveHandler);
       };
     }, [canvas]);
     useLayoutEffect(() => {
