@@ -33,6 +33,7 @@ const Main = () => {
   const [pointsAmount, setPointsAmount] = useState<number>(DEFAULT_POINTS);
   const [iterations, setIterations] = useState<number>(DEFAULT_ITERATIONS);
   const [steps, setSteps] = useState<number[]>([]);
+  const [stepsDisplay, setStepsDisplay] = useState<string[]>([]);
   const [points, setPoints] = useState<Map<number, Point>>(new Map());
   const [lines, setLines] = useState<Map<number, Line>>(new Map());
   const [mode, setMode] = useState<Mode>(Mode.CIRCLE);
@@ -140,6 +141,13 @@ const Main = () => {
         maxY
       );
       setSteps(steps);
+      setStepsDisplay(
+        steps.reduce((acc: string[], cur: number, i: number) => {
+          steps[i + 1] && acc.push(`${cur} -> ${steps[i + 1]}`);
+          if (i === steps.length - 1) acc.push(`||0`);
+          return acc;
+        }, [])
+      );
 
       console.log("Done generating");
     }, 10);
@@ -166,7 +174,7 @@ const Main = () => {
         <Spinner active={generating} />
         <FormSteps
           formStep={formStep}
-          totalSteps={4}
+          totalSteps={3}
           setFormStep={setFormStep}
         />
         <div className="sectionWrapper">
@@ -183,10 +191,12 @@ const Main = () => {
             heightSetter={setCanvasHeight}
             setFormStep={setFormStep}
             canvasesRef={canvasesRef}
+            setIterations={setIterations}
           />
           <OutputSection
-            setIterations={setIterations}
             steps={steps}
+            stepsDisplay={stepsDisplay}
+            setStepsDisplay={setStepsDisplay}
             lines={lines}
             iterations={iterations}
           />

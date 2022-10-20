@@ -3,7 +3,7 @@ import {
   DEFAULT_CANVAS_HEIGHT,
   DEFAULT_CANVAS_WIDTH,
 } from "../../../utils/constants";
-import { getImageDataFromFile } from "../../../utils/functions";
+import { clearCtx, getImageDataFromFile } from "../../../utils/functions";
 import Canvas from "../CanvasSection/Canvas";
 import { HTMLCanvasWithImage } from "../CanvasSection/ImageCanvas";
 import InputFile from "./InputFile";
@@ -47,7 +47,7 @@ const ImageSection: React.FC<IImageSectionProps> = ({
     const imageCtx = imageCanvas.getContext("2d");
     if (!imageCtx) throw new Error("no ctx when uploading image via inputfile");
 
-    const { imageData: fileData, image } = await getImageDataFromFile(
+    const { image } = await getImageDataFromFile(
       file,
       previewCanvas.width,
       0,
@@ -58,9 +58,17 @@ const ImageSection: React.FC<IImageSectionProps> = ({
 
     previewCanvas.width = image.width;
     previewCanvas.height = image.height;
-    ctx.putImageData(fileData as ImageData, 0, 0);
-    imageCtx.putImageData(fileData as ImageData, 0, 0);
 
+    ctx.drawImage(image.img, 0, 0, image.width, image.height);
+    imageCtx.drawImage(
+      image.img,
+      0,
+      0,
+      image.originalWidth,
+      image.originalHeight
+    );
+    imageRef.current.file.width = imageRef.current.file.originalWidth;
+    imageRef.current.file.height = imageRef.current.file.originalHeight;
     setCanConfirm(true);
   };
 
@@ -74,7 +82,7 @@ const ImageSection: React.FC<IImageSectionProps> = ({
   return (
     <section className={`mainSection mainSection--image ${className}`}>
       <div className="sectionHeader">
-        <h2>First choose your image</h2>
+        <h2>Choose your image</h2>
       </div>
       <InputFile fileChangeHandler={handleFileChange} />
       <div className="subSection">
@@ -91,7 +99,7 @@ const ImageSection: React.FC<IImageSectionProps> = ({
       <div className="subSection">
         <div className="subSection__content">
           <button type="button" onClick={handleConfirm} disabled={!canConfirm}>
-            Confirm
+            Next
           </button>
         </div>
       </div>

@@ -4,12 +4,13 @@ import { Mode } from "../../../utils/interfaces";
 import CanvasSection from "../CanvasSection";
 import { HTMLCanvasWithImage } from "../CanvasSection/ImageCanvas";
 import ImageControls from "./Controls/ImageControls";
+import IterationControls from "./Controls/IterationControls";
 import NailsControls from "./Controls/NailsControls";
-import OpacityControls from "./Controls/OpacityControls";
 
 type ISetupSectionProps = {
   generateHandler: () => void;
   setPointsAmount: (pointsAmount: number) => void;
+  setIterations: (iterations: number) => void;
   modeSetter: (newMode: Mode) => void;
   widthSetter: (height: number) => void;
   heightSetter: (width: number) => void;
@@ -24,6 +25,7 @@ type ISetupSectionProps = {
 const SetupSection = ({
   generateHandler,
   setPointsAmount,
+  setIterations,
   modeSetter,
   widthSetter,
   heightSetter,
@@ -48,6 +50,14 @@ const SetupSection = ({
     setPointsAmount(Number(target.value));
   };
 
+  const handleOpacityChange = (e: React.ChangeEvent) => {
+    const target = e.target as HTMLInputElement;
+    if (target.name === "imageOpacity")
+      setImageOpacity(Number(target.value) / 100);
+    if (target.name === "drawingOpacity")
+      setDrawingOpacity(Number(target.value) / 100);
+  };
+
   const handleConfirm = () => {
     generateHandler();
   };
@@ -68,13 +78,15 @@ const SetupSection = ({
           widthSetter={widthSetter}
           heightSetter={heightSetter}
         />
-        <OpacityControls
-          imageOpacity={imageOpacity}
-          drawingOpacity={drawingOpacity}
-          setImageOpacity={setImageOpacity}
-          setDrawingOpacity={setDrawingOpacity}
+        <ImageControls
+          imageSize={imageSize}
+          setImageSize={setImageSize}
+          handleOpacityChange={handleOpacityChange}
         />
-        <ImageControls imageSize={imageSize} setImageSize={setImageSize} />
+        <IterationControls
+          setIterations={setIterations}
+          handleOpacityChange={handleOpacityChange}
+        />
       </div>
 
       <CanvasSection
@@ -86,6 +98,13 @@ const SetupSection = ({
 
       <div className="subSection">
         <div className="subSection__content flex-row">
+          <button
+            type="button"
+            onClick={() => setFormStep((old: number) => old - 1)}
+            disabled={!canConfirm}
+          >
+            Previous
+          </button>
           <button type="button" onClick={handleConfirm}>
             Generate
           </button>

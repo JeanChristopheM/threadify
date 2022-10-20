@@ -24,8 +24,7 @@ const NailsControls: React.FC<INailsControlsProps> = ({
       <div className="subSection__content">
         <div className="formGroup separator">
           <label htmlFor="pointsSlider">
-            Number of points :{" "}
-            <span id="pointsAmountSpan">{DEFAULT_POINTS}</span>
+            Amount : <span id="pointsAmountSpan">{DEFAULT_POINTS}</span>
           </label>
           <div className="inputRange_container">
             <input
@@ -39,7 +38,7 @@ const NailsControls: React.FC<INailsControlsProps> = ({
           </div>
         </div>
         <div className="formGroup separator">
-          <label htmlFor="modeSelector">Mode of ouput</label>
+          <label htmlFor="modeSelector">Mode : </label>
           <select
             name="modeSelector"
             className="inputSelect"

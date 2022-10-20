@@ -18,6 +18,8 @@ export interface HTMLCanvasWithImage extends HTMLCanvasElement {
     img: HTMLImageElement;
     width: number;
     height: number;
+    originalWidth: number;
+    originalHeight: number;
   };
 }
 const ImageCanvas = React.forwardRef<HTMLCanvasElement, IImageCanvasProps>(
@@ -140,21 +142,34 @@ const ImageCanvas = React.forwardRef<HTMLCanvasElement, IImageCanvasProps>(
         "still-clicX:0-clicY:0-finalX:0-finalY:0-lastPosX:0-lastPosY:0"
       );
 
-      canvas.addEventListener("mousedown", mouseDownHandler);
+      canvas.addEventListener("pointerdown", mouseDownHandler);
       canvas.addEventListener("mouseup", mouseUpHandler);
       canvas.addEventListener("mousemove", mouseMoveHandler);
       return () => {
-        canvas.removeEventListener("mousedown", mouseDownHandler);
+        canvas.removeEventListener("pointerdown", mouseDownHandler);
         canvas.removeEventListener("mouseup", mouseUpHandler);
         canvas.removeEventListener("mousemove", mouseMoveHandler);
       };
     }, [canvas]);
     useLayoutEffect(() => {
       if (!ref || !canvas) return;
-      resizeImage(
+      const { drawX, drawY } = resizeImage(
         ref as React.ForwardedRef<HTMLCanvasWithImage>,
         sizeMultiplier
       );
+      if (canvas.file) {
+        const ctx = canvas.getContext("2d");
+        if (ctx) {
+          clearCtx(ctx);
+          ctx.drawImage(
+            canvas.file.img,
+            drawX || 0,
+            drawY || 0,
+            canvas.file.width,
+            canvas.file.height
+          );
+        }
+      }
     }, [canvas, sizeMultiplier]);
 
     // . Return

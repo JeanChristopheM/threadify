@@ -183,6 +183,8 @@ export const getImageDataFromFile = async (
     img: HTMLImageElement;
     width: number;
     height: number;
+    originalWidth: number;
+    originalHeight: number;
   };
 }> =>
   new Promise((resolve, reject) => {
@@ -207,6 +209,8 @@ export const getImageDataFromFile = async (
           img,
           width: dimensions.width,
           height: dimensions.height,
+          originalWidth: img.width,
+          originalHeight: img.height,
         },
       });
     };
@@ -220,13 +224,15 @@ export const resizeImage = (
   ref: React.ForwardedRef<HTMLCanvasWithImage>,
   sizeMultiplier: number
 ) => {
-  if (!ref) return;
+  const result = { drawX: undefined, drawY: undefined };
+  if (!ref) return result;
   const canvas: HTMLCanvasWithImage = (ref as any).current;
-  if (!canvas || !canvas.file) return;
+  if (!canvas || !canvas.file) return result;
   const lastPosMatches = canvas.className.match(/lastPos[X-Y]:-?\d+/g);
-  if (!lastPosMatches) return;
+  if (!lastPosMatches) return result;
   const lastPosX = Number(lastPosMatches[0].split(":")[1]);
   const lastPosY = Number(lastPosMatches[1].split(":")[1]);
-  // canvas.file.width *= sizeMultiplier / 100;
-  console.log({ x: lastPosX, y: lastPosY, canvas: canvas.file.width });
+  canvas.file.width = (canvas.file.originalWidth * sizeMultiplier) / 100;
+  canvas.file.height = (canvas.file.originalHeight * sizeMultiplier) / 100;
+  return { drawX: lastPosX, drawY: lastPosY };
 };
