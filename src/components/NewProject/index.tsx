@@ -25,20 +25,28 @@ import OutputSection from "./OutputSection";
 import SetupSection from "./SetupSection";
 import Spinner from "./Spinner";
 
-const Main = () => {
+const NewProject = () => {
   //. Local State
   //. -----------
+  // * UI *
   const [formStep, setFormStep] = useState<number>(1);
+
   const [generating, setGenerating] = useState<boolean>(false);
+
+  // * ART VARIABLES *
+  const [mode, setMode] = useState<Mode>(Mode.CIRCLE);
+
   const [pointsAmount, setPointsAmount] = useState<number>(DEFAULT_POINTS);
+  const [points, setPoints] = useState<Map<number, Point>>(new Map());
+
   const [iterations, setIterations] = useState<number>(DEFAULT_ITERATIONS);
   const [steps, setSteps] = useState<number[]>([]);
   const [stepsDisplay, setStepsDisplay] = useState<string[]>([]);
-  const [points, setPoints] = useState<Map<number, Point>>(new Map());
+
   const [lines, setLines] = useState<Map<number, Line>>(new Map());
-  const [mode, setMode] = useState<Mode>(Mode.CIRCLE);
-  const [canvasWidth, setCanvasWidth] = useState<number>(100);
-  const [canvasHeight, setCanvasHeight] = useState<number>(100);
+
+  const [artWidth, setArtWidth] = useState<number>(100);
+  const [artHeight, setArtHeight] = useState<number>(100);
 
   //. Local References
   //. ----------------
@@ -54,14 +62,14 @@ const Main = () => {
   // * Changing points when mode/pointsAmount changes
   useEffect(() => {
     if (!drawingRef.current) return;
-    const width = Math.floor(drawingRef.current.width * (canvasWidth / 100));
-    const height = Math.floor(drawingRef.current.height * (canvasHeight / 100));
+    const width = Math.floor(drawingRef.current.width * (artWidth / 100));
+    const height = Math.floor(drawingRef.current.height * (artHeight / 100));
     const lostWidth = drawingRef.current.width - width;
     const lostHeight = drawingRef.current.height - height;
     setPoints(
       getDots(pointsAmount, width, height, mode, lostWidth, lostHeight)
     );
-  }, [pointsAmount, drawingRef.current, mode, canvasWidth, canvasHeight]);
+  }, [pointsAmount, drawingRef.current, mode, artWidth, artHeight]);
   // * Drawing lines when something changes
   useEffect(() => {
     if (points) handleDrawLines();
@@ -172,38 +180,40 @@ const Main = () => {
     <main>
       <div className="mainContainer">
         <Spinner active={generating} />
-        <FormSteps
-          formStep={formStep}
-          totalSteps={3}
-          setFormStep={setFormStep}
-        />
-        <div className="sectionWrapper">
-          <ImageSection
-            previewRef={previewRef}
-            imageRef={imageRef}
+        <div className="newProject">
+          <FormSteps
+            formStep={formStep}
+            totalSteps={3}
             setFormStep={setFormStep}
           />
-          <SetupSection
-            generateHandler={handleGenerate}
-            setPointsAmount={setPointsAmount}
-            modeSetter={handleModeChange}
-            widthSetter={setCanvasWidth}
-            heightSetter={setCanvasHeight}
-            setFormStep={setFormStep}
-            canvasesRef={canvasesRef}
-            setIterations={setIterations}
-          />
-          <OutputSection
-            steps={steps}
-            stepsDisplay={stepsDisplay}
-            setStepsDisplay={setStepsDisplay}
-            lines={lines}
-            iterations={iterations}
-          />
+          <div className="sectionWrapper">
+            <ImageSection
+              previewRef={previewRef}
+              imageRef={imageRef}
+              setFormStep={setFormStep}
+            />
+            <SetupSection
+              generateHandler={handleGenerate}
+              setPointsAmount={setPointsAmount}
+              modeSetter={handleModeChange}
+              artWidthSetter={setArtWidth}
+              artHeightSetter={setArtHeight}
+              setFormStep={setFormStep}
+              canvasesRef={canvasesRef}
+              setIterations={setIterations}
+            />
+            <OutputSection
+              steps={steps}
+              stepsDisplay={stepsDisplay}
+              setStepsDisplay={setStepsDisplay}
+              lines={lines}
+              iterations={iterations}
+            />
+          </div>
         </div>
       </div>
     </main>
   );
 };
 
-export default Main;
+export default NewProject;

@@ -5,15 +5,15 @@ import { Mode } from "../../../../utils/interfaces";
 interface INailsControlsProps {
   handleChangePoints: (e: React.ChangeEvent) => void;
   handleChangeMode: (newMode: Mode) => void;
-  widthSetter: (height: number) => void;
-  heightSetter: (width: number) => void;
+  artWidthSetter: (height: number) => void;
+  artHeightSetter: (width: number) => void;
 }
 
 const NailsControls: React.FC<INailsControlsProps> = ({
   handleChangePoints,
   handleChangeMode,
-  widthSetter,
-  heightSetter,
+  artWidthSetter,
+  artHeightSetter,
 }) => {
   const [heightHidden, setHeightHidden] = useState<boolean>(true);
   return (
@@ -60,7 +60,7 @@ const NailsControls: React.FC<INailsControlsProps> = ({
             max="100"
             defaultValue="100"
             onChange={(e: React.ChangeEvent) =>
-              widthSetter(Number((e.target as HTMLInputElement).value))
+              artWidthSetter(Number((e.target as HTMLInputElement).value))
             }
           />
         </div>
@@ -73,7 +73,7 @@ const NailsControls: React.FC<INailsControlsProps> = ({
             max="100"
             defaultValue="100"
             onChange={(e: React.ChangeEvent) =>
-              heightSetter(Number((e.target as HTMLInputElement).value))
+              artHeightSetter(Number((e.target as HTMLInputElement).value))
             }
           />
         </div>

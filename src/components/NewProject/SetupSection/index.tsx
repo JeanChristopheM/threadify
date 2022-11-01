@@ -12,8 +12,8 @@ type ISetupSectionProps = {
   setPointsAmount: (pointsAmount: number) => void;
   setIterations: (iterations: number) => void;
   modeSetter: (newMode: Mode) => void;
-  widthSetter: (height: number) => void;
-  heightSetter: (width: number) => void;
+  artWidthSetter: (height: number) => void;
+  artHeightSetter: (width: number) => void;
   className?: string;
   setFormStep: React.Dispatch<React.SetStateAction<number>>;
   canvasesRef: React.MutableRefObject<{
@@ -27,8 +27,8 @@ const SetupSection = ({
   setPointsAmount,
   setIterations,
   modeSetter,
-  widthSetter,
-  heightSetter,
+  artWidthSetter,
+  artHeightSetter,
   className,
   setFormStep,
   canvasesRef,
@@ -75,8 +75,8 @@ const SetupSection = ({
         <NailsControls
           handleChangePoints={handleChangePoints}
           handleChangeMode={modeSetter}
-          widthSetter={widthSetter}
-          heightSetter={heightSetter}
+          artWidthSetter={artWidthSetter}
+          artHeightSetter={artHeightSetter}
         />
         <ImageControls
           imageSize={imageSize}
