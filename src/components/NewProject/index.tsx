@@ -1,4 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  UNSAFE_NavigationContext as NavigationContext,
+  useLocation,
+} from "react-router-dom";
 import Line from "../../entities/Line";
 import Point from "../../entities/Point";
 import {
@@ -177,42 +181,40 @@ const NewProject = () => {
   //. Return
   //. ------
   return (
-    <main>
-      <div className="mainContainer">
-        <Spinner active={generating} />
-        <div className="newProject">
-          <FormSteps
-            formStep={formStep}
-            totalSteps={3}
+    <>
+      <Spinner active={generating} />
+      <div className="newProject">
+        <FormSteps
+          formStep={formStep}
+          totalSteps={3}
+          setFormStep={setFormStep}
+        />
+        <div className="sectionWrapper">
+          <ImageSection
+            previewRef={previewRef}
+            imageRef={imageRef}
             setFormStep={setFormStep}
           />
-          <div className="sectionWrapper">
-            <ImageSection
-              previewRef={previewRef}
-              imageRef={imageRef}
-              setFormStep={setFormStep}
-            />
-            <SetupSection
-              generateHandler={handleGenerate}
-              setPointsAmount={setPointsAmount}
-              modeSetter={handleModeChange}
-              artWidthSetter={setArtWidth}
-              artHeightSetter={setArtHeight}
-              setFormStep={setFormStep}
-              canvasesRef={canvasesRef}
-              setIterations={setIterations}
-            />
-            <OutputSection
-              steps={steps}
-              stepsDisplay={stepsDisplay}
-              setStepsDisplay={setStepsDisplay}
-              lines={lines}
-              iterations={iterations}
-            />
-          </div>
+          <SetupSection
+            generateHandler={handleGenerate}
+            setPointsAmount={setPointsAmount}
+            modeSetter={handleModeChange}
+            artWidthSetter={setArtWidth}
+            artHeightSetter={setArtHeight}
+            setFormStep={setFormStep}
+            canvasesRef={canvasesRef}
+            setIterations={setIterations}
+          />
+          <OutputSection
+            steps={steps}
+            stepsDisplay={stepsDisplay}
+            setStepsDisplay={setStepsDisplay}
+            lines={lines}
+            iterations={iterations}
+          />
         </div>
       </div>
-    </main>
+    </>
   );
 };
 

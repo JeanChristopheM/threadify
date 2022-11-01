@@ -1,23 +1,34 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Header from "./Header";
 import LandingPage from "./LandingPage";
-import Main from "./NewProject";
+import Layout from "./Layout";
+import NewProject from "./NewProject";
+import OldProject from "./OldProject";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <LandingPage />,
-  },
-  {
-    path: "new",
-    element: <Main />,
+    element: <Layout />,
+    children: [
+      {
+        path: "",
+        element: <LandingPage />,
+      },
+      {
+        path: "new",
+        element: <NewProject />,
+      },
+      {
+        path: "letsgo",
+        element: <OldProject />,
+      },
+    ],
+    errorElement: <p>Page not found</p>,
   },
 ]);
 
 const App = () => {
   return (
     <div id="app">
-      <Header />
       <RouterProvider router={router} />
     </div>
   );

@@ -1,4 +1,4 @@
-import { HTMLCanvasWithImage } from "../components/Main/CanvasSection/ImageCanvas";
+import { HTMLCanvasWithImage } from "../components/NewProject/CanvasSection/ImageCanvas";
 import Line from "../entities/Line";
 import Point from "../entities/Point";
 import { Mode } from "./interfaces";
