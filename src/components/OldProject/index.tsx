@@ -27,9 +27,12 @@ const OldProject = () => {
       try {
         const steps: string[] = (fr.result as string).split(",");
         const currentStep = Number(steps[steps.length - 1].split("||")[1]);
-        if (steps && currentStep) {
+        if (steps && currentStep !== undefined && currentStep !== null) {
           setData(fr.result);
-        } else throw new Error("Uploaded data is not valid.");
+        } else {
+          console.warn({ steps, currentStep });
+          throw new Error("Uploaded data is not valid.");
+        }
       } catch (e) {
         alert(e);
       }
@@ -59,8 +62,8 @@ const OldProject = () => {
           .split("||")[0]
           .concat(
             `||${
-              currentStep >= steps.length - 1
-                ? steps.length - 1
+              currentStep >= steps.length - 2
+                ? steps.length - 2
                 : currentStep + 1
             }`
           )
@@ -86,11 +89,14 @@ const OldProject = () => {
       try {
         const steps: string[] = data.split(",");
         const currentStep = Number(steps[steps.length - 1].split("||")[1]);
-        if (steps && currentStep) {
+        if (steps && currentStep !== undefined && currentStep !== null) {
           setSteps(steps);
           setCurrentStep(currentStep);
           setIsValid(true);
-        } else throw new Error("data is not valid");
+        } else {
+          console.warn({ steps, currentStep });
+          throw new Error("data is not valid");
+        }
       } catch (e) {
         console.warn("data updated and is not valid");
         setIsValid(false);
@@ -113,7 +119,7 @@ const OldProject = () => {
   // . ------
   return (
     <>
-      <div className="flex-row">
+      <div className="flex-row flex-row-centered">
         <button type="button" onClick={handleUploadSteps}>
           Upload saved file
         </button>
@@ -121,18 +127,24 @@ const OldProject = () => {
           Save locally
         </button>
       </div>
-      {data.length && isValid ? (
+      {data.length &&
+      isValid &&
+      steps.length &&
+      currentStep !== undefined &&
+      currentStep !== null ? (
         <>
           <div className="subSection stepsDisplay">
             <span>{steps[currentStep].split(" -> ")[0]}</span>
             <span>→</span>
             <span>{steps[currentStep].split(" -> ")[1]}</span>
           </div>
-          <div className="subSection flex-row">
+          <div className="subSection flex-row flex-row-centered">
             <button type="button" onClick={handleChangeCraftStep} id="prev">
               {"<"}
             </button>
-            <div className="craftStepDisplay">{currentStep}</div>
+            <div className="craftStepDisplay" id="middle">
+              {currentStep}
+            </div>
             <button type="button" onClick={handleChangeCraftStep} id="next">
               {">"}
             </button>

@@ -110,3 +110,13 @@ label {
 .customLink {
   cursor: pointer;
 }
+#prev,
+#next,
+#middle {
+  font-size: 5rem;
+  aspect-ratio: 1;
+}
+#prev,
+#next {
+  font-weight: bold;
+}

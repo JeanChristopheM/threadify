@@ -197,6 +197,9 @@
   &-row {
     display: flex;
     gap: 1rem;
+    &-centered {
+      justify-content: center;
+    }
   }
   &-column {
     display: flex;
