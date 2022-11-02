@@ -88,13 +88,16 @@ input[type="range"] {
   border-radius: 1rem;
   background-color: $clr-bg;
 }
-input[type="file"] {
+input[type="file"],
+input[type="number"],
+select {
   display: block;
   border: 1px solid black;
   padding: 0.5rem;
   border-radius: 0.3rem;
 }
 .inputSelect {
+  display: block;
   padding: 0.5rem;
   border-radius: 0.3rem;
   border: 1px solid black;

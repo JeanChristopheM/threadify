@@ -22,6 +22,7 @@ import {
 } from "../../utils/functions";
 import { Mode } from "../../utils/interfaces";
 import { generateSteps } from "../../utils/thread";
+import ArtSettingsSection from "./ArtSettingsSection";
 import { HTMLCanvasWithImage } from "./CanvasSection/ImageCanvas";
 import FormSteps from "./FormSteps";
 import ImageSection from "./ImageSection";
@@ -186,7 +187,7 @@ const NewProject = () => {
       <div className="newProject">
         <FormSteps
           formStep={formStep}
-          totalSteps={3}
+          totalSteps={4}
           setFormStep={setFormStep}
         />
         <div className="sectionWrapper">
@@ -195,6 +196,7 @@ const NewProject = () => {
             imageRef={imageRef}
             setFormStep={setFormStep}
           />
+          <ArtSettingsSection />
           <SetupSection
             generateHandler={handleGenerate}
             setPointsAmount={setPointsAmount}
