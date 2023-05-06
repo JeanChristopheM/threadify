@@ -5,6 +5,7 @@
 @import "spinner";
 
 @import "landingPage";
+@import "menu";
 
 @font-face {
   font-family: "playfair_displayregular";
@@ -44,13 +45,20 @@ header {
   padding: 0.5rem 1rem;
   color: $clr-main;
   background-color: $clr-bg;
+  display: flex;
+  align-items: baseline;
+  .sidebarButton {
+    font-size: 2rem;
+    margin-right: 1rem;
+    cursor: pointer;
+  }
 }
 main {
   min-height: 100%;
   background-color: $clr-main;
   overflow: hidden;
 }
-button {
+button:not(.sidebarButton) {
   color: $clr-main;
   padding: 1rem;
   margin: 0.2rem;

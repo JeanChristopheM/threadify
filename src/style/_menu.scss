@@ -1,0 +1,39 @@
+.menu {
+  width: 100%;
+  height: 100%;
+  z-index: 999;
+  position: absolute;
+  isolation: isolate;
+  top: 0;
+  left: 0;
+
+  .slidingPortion {
+    background-color: $clr-main;
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 65%;
+    z-index: 1;
+    transition: all 0.3s;
+  }
+  .exitPortion {
+    background-color: rgba(0, 0, 0, 0.448);
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    transition: all 0.3s;
+  }
+  &.isClosed {
+    pointer-events: none;
+    .slidingPortion {
+      left: -100%;
+    }
+    .exitPortion {
+      pointer-events: none;
+      opacity: 0;
+    }
+  }
+}
