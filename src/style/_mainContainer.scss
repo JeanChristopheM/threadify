@@ -34,6 +34,8 @@
     }
     .controls {
       gap: 2rem;
+      padding-inline: 1rem;
+
       .subSection {
         & + .subSection {
           padding-top: 0;
@@ -72,16 +74,16 @@
   #drawingCanvas {
     z-index: 5;
     pointer-events: none;
-    max-width: 100vw;
+    max-width: 90vw;
   }
   #pointsCanvas {
     z-index: 2;
     pointer-events: none;
-    max-width: 100vw;
+    max-width: 90vw;
   }
   #imageCanvas {
     z-index: 0;
-    max-width: 100vw;
+    max-width: 90vw;
   }
 }
 .flex {
