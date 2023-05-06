@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "dev-online": "vite --host",
+    "dev:online": "vite --host",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "predeploy": "npm run build",

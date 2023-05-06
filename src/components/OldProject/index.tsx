@@ -110,7 +110,8 @@ const OldProject = () => {
   const location = useLocation();
   useEffect(() => () => {
     // * Saving on navigate unmount
-    if (location.key !== window.history.state.key) {
+    console.log({ location: location.key, window: window.history.state });
+    if (location.key !== window.history?.state?.key) {
       setData(data);
     }
   });

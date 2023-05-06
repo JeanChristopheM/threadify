@@ -6,7 +6,6 @@ const Header = () => {
       <Link to="/" className="customLink">
         <h1>Threadify</h1>
       </Link>
-      <p>Turn images into thread art</p>
     </header>
   );
 };

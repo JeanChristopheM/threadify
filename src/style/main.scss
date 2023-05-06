@@ -4,6 +4,8 @@
 @import "mainContainer";
 @import "spinner";
 
+@import "landingPage";
+
 @font-face {
   font-family: "playfair_displayregular";
   src: url("playfairdisplay-variablefont_wght-webfont.woff2") format("woff2"),
@@ -20,7 +22,7 @@ body {
   position: relative;
 }
 h1 {
-  font-size: 3rem;
+  font-size: 2rem;
   font-weight: 600;
   z-index: 2;
 }
@@ -39,8 +41,7 @@ h3 {
 }
 header {
   position: relative;
-  padding: 1rem;
-  min-height: 6rem;
+  padding: 0.5rem 1rem;
   color: $clr-main;
   background-color: $clr-bg;
 }
@@ -50,6 +51,7 @@ main {
   overflow: hidden;
 }
 button {
+  color: $clr-main;
   padding: 1rem;
   margin: 0.2rem;
   border-radius: 0.3rem;
@@ -60,8 +62,8 @@ button {
   cursor: pointer;
   z-index: 0;
   transform: translateY(0);
-  background-color: $clr-accent;
-  box-shadow: 0 3px 0 0 $clr-accent-dark;
+  background-color: $clr-bg;
+  box-shadow: 0 3px 0 0 $clr-bg-dark;
   @media (hover: hover) {
     &:hover {
       transform: translateY(-3px);
