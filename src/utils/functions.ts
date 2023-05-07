@@ -2,15 +2,19 @@ import { HTMLCanvasWithImage } from "../components/NewProject/CanvasSection/Imag
 import Line from "../entities/Line";
 import Point from "../entities/Point";
 import { Mode } from "./interfaces";
+
 export const pinPair = (a: number, b: number) => {
   return a < b ? 10000 * a + b : a + 10000 * b;
 };
+
 export const clearCtx = (ctx: CanvasRenderingContext2D) => {
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 };
+
 export const random = (min: number, max: number) => {
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
+
 export const bezier = (
   line: Line,
   ctx: CanvasRenderingContext2D,
@@ -31,16 +35,17 @@ export const bezier = (
 export const calcLines = (points: Map<number, Point>) => {
   const lines = new Map<number, Line>();
   for (let i = 0; i < points.size; ++i) {
+    const p1 = points.get(i);
+    if (!p1) continue;
     for (let j = i + 1; j < points.size; ++j) {
-      const p1 = points.get(i);
       const p2 = points.get(j);
-      if (!p1 || !p2) continue;
-      if (p1.x == p2.x) continue;
+      if (!p2 || p1.x === p2.x) continue;
       lines.set(pinPair(i, j), new Line(p1, p2));
     }
   }
   return lines;
 };
+
 export const drawLines = (
   steps: number[],
   lines: Map<number, Line>,
@@ -155,6 +160,7 @@ export const drawDots = (
     drawText(ctx, `${i}`, dot.x, dot.y, "#ff0f0f");
   });
 };
+
 export const getScaledImgSize = (iW: number, iH: number, cW: number) => {
   const ratio = iW / iH;
   const result = {
@@ -172,6 +178,7 @@ export const getScaledImgSize = (iW: number, iH: number, cW: number) => {
 
   return result;
 };
+
 export const getImageDataFromFile = async (
   file: File,
   canvasWidth: number,

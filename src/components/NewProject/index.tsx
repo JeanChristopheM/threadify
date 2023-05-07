@@ -103,12 +103,14 @@ const NewProject = () => {
   const handleModeChange = (newMode: Mode) => {
     setMode(newMode);
   };
+
   const handleDrawLines = () => {
     if (steps.length && points.size && lines.size && drawingRef.current) {
       const ctx = drawingRef.current.getContext("2d");
       ctx && drawLines(steps, lines, ctx, 5, iterations, "#000");
     }
   };
+
   const handleDrawPoints = () => {
     if (!pointsRef.current) return;
     const ctx = pointsRef.current.getContext("2d");
@@ -116,6 +118,7 @@ const NewProject = () => {
     clearCtx(ctx);
     drawDots(ctx, points);
   };
+
   const handleGenerate = async () => {
     setGenerating(true);
     setTimeout(() => {
@@ -139,7 +142,7 @@ const NewProject = () => {
 
       const lines = calcLines(points);
       setLines(lines);
-
+      console.time("1");
       const steps = generateSteps(
         buf32,
         MAX_ITERATIONS,
@@ -153,7 +156,9 @@ const NewProject = () => {
         maxX,
         maxY
       );
+      console.timeEnd("1");
       setSteps(steps);
+
       setStepsDisplay(
         steps.reduce((acc: string[], cur: number, i: number) => {
           steps[i + 1] && acc.push(`${cur} -> ${steps[i + 1]}`);

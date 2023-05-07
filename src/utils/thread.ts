@@ -11,10 +11,12 @@ const lineScore = (img: Uint32Array, line: Line) => {
   });
   return score / line.pixelsIndexes.length;
 };
+
 const nextPin = (
   current: number,
   lines: Map<number, Line>,
-  used: number[],
+  // used: number[],
+  used: Set<number>,
   img: Uint32Array,
   minDistance: number,
   pins: Map<number, Point>,
@@ -28,39 +30,48 @@ const nextPin = (
   let next = -1;
   const squareMinXDiff = maxX - minX;
   const squareMinYDiff = maxY - minY;
-
-  for (let i = 0; i < pins.size; i++) {
+  const pinsAmount = pins.size;
+  const distMin = (minDistance * 2) / 3;
+  const distMax = (minDistance * 4) / 3;
+  for (const [i] of pins) {
     if (current === i) continue;
-    const pair = pinPair(current, i);
+    const pairId = pinPair(current, i);
+    const line = lines.get(pairId);
+    if (!line) continue;
+    // Prevent usage of already used line
+    // if (used.includes(pairId)) continue;
+    if (used.has(pairId)) continue;
 
     if (mode === Mode.CIRCLE) {
       const diff = Math.abs(current - i);
-      const dist = random((minDistance * 2) / 3, (minDistance * 4) / 3);
-      if (diff < dist || diff > pins.size - dist) continue;
+      const dist = random(distMin, distMax);
+      // Prevent lines that are too short to be considered
+      if (diff < dist || diff > pinsAmount - dist) continue;
     } else {
-      const pCurr = pins.get(current);
-      const pNext = pins.get(i);
-      if (pCurr!.x == minX && pNext!.x == minX) continue;
-      if (pCurr!.x == maxX && pNext!.x == maxX) continue;
-      if (pCurr!.y == minY && pNext!.y == minY) continue;
-      if (pCurr!.y == maxY && pNext!.y == maxY) continue;
-      if (pCurr!.x === pNext!.x) {
-        const yDiff = Math.abs(pCurr!.y - pNext!.y);
+      const pCurr = pins.get(current)!;
+      const pNext = pins.get(i)!;
+
+      // Prevent lines that are on pins plane to be considered
+      if (pCurr.x == minX && pNext.x == minX) continue;
+      if (pCurr.x == maxX && pNext.x == maxX) continue;
+      if (pCurr.y == minY && pNext.y == minY) continue;
+      if (pCurr.y == maxY && pNext.y == maxY) continue;
+
+      // Prevent lines that share a point &&
+      // are at a too sharp of an angle to be considered
+      if (pCurr.x === pNext.x) {
+        const yDiff = Math.abs(pCurr.y - pNext.y);
         if (yDiff < squareMinYDiff) continue;
       }
-      if (pCurr!.y === pNext!.y) {
-        const xDiff = Math.abs(pCurr!.x - pNext!.x);
+      if (pCurr.y === pNext.y) {
+        const xDiff = Math.abs(pCurr.x - pNext.x);
         if (xDiff < squareMinXDiff) continue;
       }
     }
 
-    // Prevent usage of already used pin pair
-    if (used.includes(pair)) continue;
-
-    const line = lines.get(pair);
-    if (!line) continue;
     // Calculate line score and save next pin with maximum score
     const score = lineScore(img, line);
+    // const score = lineScoreMemoized(img, line);
 
     if (score > maxScore) {
       maxScore = score;
@@ -69,10 +80,11 @@ const nextPin = (
   }
   return next;
 };
+
 const reduceLine = (data: Uint32Array, line: Line, fade: number) => {
+  if (!line) return data;
   const temp32 = new Uint32Array(1);
   const temp8 = new Uint8ClampedArray(temp32.buffer);
-  if (!line) return data;
   line.pixelsIndexes.forEach((i) => {
     temp32[0] = data[i];
     temp8.forEach((_v, temp8index) => {
@@ -86,6 +98,7 @@ const reduceLine = (data: Uint32Array, line: Line, fade: number) => {
   });
   return data;
 };
+
 export const generateSteps = (
   img: Uint32Array,
   lineAmount: number,
@@ -99,12 +112,13 @@ export const generateSteps = (
   maxX: number,
   maxY: number
 ) => {
-  const steps: number[] = [];
-  const used: number[] = [];
-  let current: number = 0;
-  steps.push(current);
-  let amount = lineAmount;
-  for (let i = 0; i < amount; i++) {
+  const steps: number[] = new Array(lineAmount + 1);
+  const used: Set<number> = new Set();
+  let current = 0;
+  let i = 0;
+  steps[i++] = current;
+
+  while (i <= lineAmount) {
     // Get next pin
     const next = nextPin(
       current,
@@ -120,15 +134,16 @@ export const generateSteps = (
       maxY
     );
     if (next < 0) {
-      amount = used.length;
+      lineAmount = used.size;
+      steps.length = i;
       return steps;
     }
 
+    const pairId = pinPair(current, next);
     // Reduce darkness in image
-    const pair = pinPair(current, next);
-    img = reduceLine(img, lines.get(pair)!, fade);
-    used.push(pair);
-    steps.push(next);
+    img = reduceLine(img, lines.get(pairId)!, fade);
+    used.add(pairId);
+    steps[i++] = next;
 
     current = next;
   }
