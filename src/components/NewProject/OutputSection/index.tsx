@@ -161,14 +161,26 @@ const OutputSection = ({
             <span>→</span>
             <span>{stepsDisplay[craftStep].split(" -> ")[1]}</span>
           </div>
-          <div className="subSection flex-row">
-            <button type="button" onClick={handleChangeCraftStep} id="prev">
-              {"<"}
+          <div className="subSection controls-section flex-row">
+            <button
+              type="button"
+              onClick={handleChangeCraftStep}
+              id="prev"
+              className="largeButton"
+            >
+              <span>{"<"}</span>
             </button>
-            <div className="craftStepDisplay">{craftStep}</div>
-            <button type="button" onClick={handleChangeCraftStep} id="next">
-              {">"}
+            <button
+              type="button"
+              onClick={handleChangeCraftStep}
+              id="next"
+              className="largeButton"
+            >
+              <span>{">"}</span>
             </button>
+          </div>
+          <div className="craftStepDisplay">
+            {craftStep + 1}/{steps.length || "?"}
           </div>
         </>
       ) : null}

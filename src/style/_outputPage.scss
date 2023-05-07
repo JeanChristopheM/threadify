@@ -1,0 +1,15 @@
+.controls-section {
+  width: min(100%, 450px);
+  justify-content: center;
+  & > * {
+    flex-grow: 1;
+    flex-basis: 50%;
+    aspect-ratio: unset !important;
+    max-width: unset !important;
+
+    span {
+      pointer-events: none;
+      user-select: none;
+    }
+  }
+}
