@@ -3,6 +3,7 @@ import LandingPage from "./LandingPage";
 import Layout from "./Layout";
 import NewProject from "./NewProject";
 import OldProject from "./OldProject";
+import ErrorPage from "./404";
 
 const router = createBrowserRouter([
   {
@@ -22,7 +23,7 @@ const router = createBrowserRouter([
         element: <OldProject />,
       },
     ],
-    errorElement: <p>Page not found</p>,
+    errorElement: <ErrorPage />,
   },
 ]);
 
