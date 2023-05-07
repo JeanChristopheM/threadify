@@ -25,6 +25,25 @@ const router = createBrowserRouter([
     ],
     errorElement: <ErrorPage />,
   },
+  {
+    path: "/threadify",
+    element: <Layout />,
+    children: [
+      {
+        path: "",
+        element: <LandingPage />,
+      },
+      {
+        path: "new",
+        element: <NewProject />,
+      },
+      {
+        path: "letsgo",
+        element: <OldProject />,
+      },
+    ],
+    errorElement: <ErrorPage />,
+  },
 ]);
 
 const App = () => {
