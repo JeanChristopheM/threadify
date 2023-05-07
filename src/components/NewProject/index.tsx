@@ -192,7 +192,7 @@ const NewProject = () => {
       <div className="newProject">
         <FormSteps
           formStep={formStep}
-          totalSteps={4}
+          totalSteps={3}
           setFormStep={setFormStep}
         />
         <div className="sectionWrapper">
@@ -201,7 +201,7 @@ const NewProject = () => {
             imageRef={imageRef}
             setFormStep={setFormStep}
           />
-          <ArtSettingsSection />
+          {/* <ArtSettingsSection /> */}
           <SetupSection
             generateHandler={handleGenerate}
             setPointsAmount={setPointsAmount}
