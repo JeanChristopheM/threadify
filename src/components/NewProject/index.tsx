@@ -69,10 +69,10 @@ const NewProject = () => {
     if (!drawingRef.current) return;
     const width = Math.floor(drawingRef.current.width * (artWidth / 100));
     const height = Math.floor(drawingRef.current.height * (artHeight / 100));
-    const lostWidth = drawingRef.current.width - width;
-    const lostHeight = drawingRef.current.height - height;
+    const paddingInline = drawingRef.current.width - width;
+    const paddingBlock = drawingRef.current.height - height;
     setPoints(
-      getDots(pointsAmount, width, height, mode, lostWidth, lostHeight)
+      getDots(pointsAmount, width, height, mode, paddingInline, paddingBlock)
     );
   }, [pointsAmount, drawingRef.current, mode, artWidth, artHeight]);
   // * Drawing lines when something changes
@@ -192,7 +192,7 @@ const NewProject = () => {
       <div className="newProject">
         <FormSteps
           formStep={formStep}
-          totalSteps={3}
+          totalSteps={4}
           setFormStep={setFormStep}
         />
         <div className="sectionWrapper">
@@ -201,7 +201,15 @@ const NewProject = () => {
             imageRef={imageRef}
             setFormStep={setFormStep}
           />
-          {/* <ArtSettingsSection /> */}
+          <ArtSettingsSection
+            modeSetter={handleModeChange}
+            artWidth={artWidth}
+            artHeight={artHeight}
+            artWidthSetter={setArtWidth}
+            artHeightSetter={setArtHeight}
+            canvasesRef={canvasesRef}
+            setPointsAmount={setPointsAmount}
+          />
           <SetupSection
             generateHandler={handleGenerate}
             setPointsAmount={setPointsAmount}

@@ -89,12 +89,12 @@ const SetupSection = ({
         />
       </div>
 
-      <CanvasSection
+      {/* <CanvasSection
         ref={canvasesRef}
         imageOpacity={imageOpacity}
         imageSize={imageSize}
         drawingOpacity={drawingOpacity}
-      />
+      /> */}
 
       <div className="subSection">
         <div className="subSection__content flex-row">

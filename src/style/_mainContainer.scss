@@ -42,6 +42,18 @@
         }
       }
     }
+    &--artSettings {
+      .controls {
+        .subSection {
+          flex-basis: 33%;
+          flex-grow: 0;
+          flex-shrink: 1;
+          input[type="number"] {
+            max-width: 10rem;
+          }
+        }
+      }
+    }
   }
 }
 .formSteps {

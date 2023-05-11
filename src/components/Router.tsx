@@ -26,7 +26,7 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
-    path: "/threadify",
+    path: "/threadify/",
     element: <Layout />,
     children: [
       {

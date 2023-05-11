@@ -69,8 +69,8 @@ export const getDots = (
   w: number,
   h: number,
   mode: Mode,
-  lostWidth: number,
-  lostHeight: number
+  paddingInline: number,
+  paddingBlock: number
 ) => {
   let points: Map<number, Point> = new Map();
   if (mode === Mode.CIRCLE) {
@@ -81,8 +81,8 @@ export const getDots = (
       points.set(i, point);
     }
     points.forEach((p) => {
-      p.x += lostWidth / 2;
-      p.y += lostWidth / 2;
+      p.x += paddingInline / 2;
+      p.y += paddingInline / 2;
     });
   } else {
     const xPins = (amount * w) / (2 * (h + w));
@@ -106,8 +106,8 @@ export const getDots = (
       points.set(points.size, new Point(w - Math.round(spaceX * i), 0));
     }
     points.forEach((p) => {
-      p.x += lostWidth / 2;
-      p.y += lostHeight / 2;
+      p.x += paddingInline / 2;
+      p.y += paddingBlock / 2;
     });
   }
   return points;
